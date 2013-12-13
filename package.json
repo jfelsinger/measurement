@@ -1,6 +1,18 @@
 {
   "name": "measurement",
+  "description": "A flexible library for handling unit conversions",
   "version": "0.1.0",
+  "license": "MIT",
+  "author": "Joel Felsinger",
+  "main": "build/out/measurement.js",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/jfelsinger/measurement.git"
+  },
+  "bugs": "https://github.com/jfelsinger/measurement/issues",
+  "licenses": [
+    { "type": "MIT", "url": "http://www.opensource.org/licenses/mit-license.php" }
+  ],
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-concat": "~0.3.0",
