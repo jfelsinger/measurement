@@ -1,5 +1,7 @@
-﻿// Represents a type of base physical property that a unit
-// can refer to
+﻿/**
+ * Represents a type of base physical property that a unit can refer to
+ * @enum {string}
+ */
 UnitTypes = {
     MASS: "MASS",
     LENGTH: "LENGTH",

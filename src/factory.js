@@ -1,6 +1,6 @@
 ﻿var MeasurementFactory = function m() {
     self = this;
-    this.units = {};
+    this['units'] = {};
 
     var siPrefixes = [
         {prefix: 'Y',  factor:  24},
@@ -99,7 +99,7 @@
     this.addUnit(day);
 
     // Set the units variable in the measurements prototype to match
-    Measurement.prototype.units = this.units;
+    Measurement.prototype['units'] = this['units'];
 };
 
 // Returns a measurement object
@@ -107,7 +107,7 @@
 // (valueString)
 // (value, unitString)
 // (value, unit)
-MeasurementFactory.prototype.measurement = function() {
+MeasurementFactory.prototype['measurement'] = function() {
     var value = arguments[0];
     var unit = arguments[1];
 
@@ -120,26 +120,26 @@ MeasurementFactory.prototype.measurement = function() {
     }
 
     if (typeof unit === 'string')
-        unit = this.units[unit];
+        unit = this['units'][unit];
 
     return new Measurement(value, unit);
 };
 
 // Add a unit to the factory
-MeasurementFactory.prototype.addUnit = function(unit, index) {
+MeasurementFactory.prototype['addUnit'] = MeasurementFactory.prototypeaddUnit = function(unit, index) {
     if (index === undefined)
-        index = unit.toString();
+        index = unit + '';
 
     // Add unit to units array
-    if (this.units[index] === undefined)
-        this.units[index] = unit;
+    if (this['units'][index] === undefined)
+        this['units'][index] = unit;
 
     // Add conversion functions to measurement prototype
     if (Measurement.prototype[index] === undefined)
         Measurement.prototype[index] = (function(unit) {
 
             return function(index) {
-                return this.as(unit, index);
+                return this['as'](unit, index);
             };
 
         })(unit);
@@ -161,7 +161,7 @@ MeasurementFactory.prototype.addUnit = function(unit, index) {
 };
 
 // Create a unit and add it to the factory
-MeasurementFactory.prototype.newUnit = function() {
+MeasurementFactory.prototype['newUnit'] = MeasurementFactory.prototype.newUnit = function() {
     var U = function(args) {
         return Unit.apply(this, args);
     };
