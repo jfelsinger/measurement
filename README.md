@@ -33,7 +33,7 @@ var valueInMeters = measurement.getValue('m');  // or .getValue(mf.units.m);
 Measurements can be converted from one unit to another by calling
 a unit method or by using the generic ``to()`` and ``as()`` methods.
 
-``
+```
 measurement = mf.km(8);
 
 // convert to miles using the unit method
