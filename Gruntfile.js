@@ -47,7 +47,8 @@ module.exports = function(grunt) {
     function buildMin(out, done) {
         var compiler = require('closure-compiler');
         var options = {
-            compilation_level: 'ADVANCED_OPTIMIZATIONS',
+            // compilation_level: 'ADVANCED_OPTIMIZATIONS',
+            compilation_level: 'SIMPLE_OPTIMIZATIONS',
             output_wrapper: '(function() {%output%})();'
         };
 
