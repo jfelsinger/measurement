@@ -1,4 +1,8 @@
-﻿/**
+﻿'use strict';
+
+var UnitTypes = require('./unit-types');
+
+/**
  * Represents a unit of measurement
  *
  * args:
@@ -47,7 +51,7 @@ Unit.prototype.getMultiplier = function() {
     }
 
     return this.multiplier * baseMultiplier;
-}
+};
 
 /**
  * Creates a unit based off of the current one;
@@ -71,6 +75,6 @@ Unit.prototype.toString = function() {
     return this.prefix + this.base || this.type;
 };
 
-// Expose Methods
-Unit.prototype['getMultiplier'] = Unit.prototype.getMultiplier;
-Unit.prototype['makeBase'] = Unit.prototype.makeBase;
+
+
+module.exports = Unit;

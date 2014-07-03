@@ -1,6 +1,11 @@
-﻿var MeasurementFactory = function m() {
-    self = this;
-    this['units'] = {};
+﻿'use strict';
+
+var Measurement = require('./measurement'),
+    UnitTypes = require('./unit-types'),
+    Unit = require('./units');
+
+var MeasurementFactory = function m() {
+    this.units = {};
 
     var siPrefixes = [
         {prefix: 'Y',  factor:  24},
@@ -32,7 +37,7 @@
         {base: 'l', type: UnitTypes.VOLUME },
         {base: 'b', type: UnitTypes.MEMORY },
         {base: 's', type: UnitTypes.TIME }
-    ]
+    ];
 
     // Add si units to unit object so they can be received later
     for (var i = 0; i < siBases.length; i++) {
@@ -51,13 +56,13 @@
 
     // length
     //
-    var inch = new Unit('in', '', .0254, UnitTypes.LENGTH);
+    var inch = new Unit('in', '', 0.0254, UnitTypes.LENGTH);
     this.addUnit(inch);
 
-    var foot = new Unit('ft', '', .3048, UnitTypes.LENGTH);
+    var foot = new Unit('ft', '', 0.3048, UnitTypes.LENGTH);
     this.addUnit(foot);
 
-    var yard = new Unit('yd', '', .9144, UnitTypes.LENGTH);
+    var yard = new Unit('yd', '', 0.9144, UnitTypes.LENGTH);
     this.addUnit(yard);
 
     var mile = new Unit('mi', '', 1609.34, UnitTypes.LENGTH);
@@ -71,16 +76,16 @@
 
     // volume
     //
-    var ounce = new Unit('oz', '', .0295735, UnitTypes.VOLUME);
+    var ounce = new Unit('oz', '', 0.0295735, UnitTypes.VOLUME);
     this.addUnit(ounce);
 
-    var cup = new Unit('c', '', .236588, UnitTypes.VOLUME);
+    var cup = new Unit('c', '', 0.236588, UnitTypes.VOLUME);
     this.addUnit(cup);
 
-    var pint = new Unit('pt', '', .473176, UnitTypes.VOLUME);
+    var pint = new Unit('pt', '', 0.473176, UnitTypes.VOLUME);
     this.addUnit(pint);
 
-    var quart = new Unit('qt', '', .946353, UnitTypes.VOLUME);
+    var quart = new Unit('qt', '', 0.946353, UnitTypes.VOLUME);
     this.addUnit(quart);
 
     var gallon = new Unit('gal', '', 3.78541, UnitTypes.VOLUME);
@@ -99,7 +104,7 @@
     this.addUnit(day);
 
     // Set the units variable in the measurements prototype to match
-    Measurement.prototype['units'] = this['units'];
+    Measurement.prototype.units = this.units;
 };
 
 // Returns a measurement object
@@ -107,7 +112,7 @@
 // (valueString)
 // (value, unitString)
 // (value, unit)
-MeasurementFactory.prototype['measurement'] = function() {
+MeasurementFactory.prototype.measurement = function() {
     var value = arguments[0];
     var unit = arguments[1];
 
@@ -120,26 +125,26 @@ MeasurementFactory.prototype['measurement'] = function() {
     }
 
     if (typeof unit === 'string')
-        unit = this['units'][unit];
+        unit = this.units[unit];
 
     return new Measurement(value, unit);
 };
 
 // Add a unit to the factory
-MeasurementFactory.prototype['addUnit'] = MeasurementFactory.prototypeaddUnit = function(unit, index) {
+MeasurementFactory.prototypeaddUnit = function(unit, index) {
     if (index === undefined)
         index = unit + '';
 
     // Add unit to units array
-    if (this['units'][index] === undefined)
-        this['units'][index] = unit;
+    if (this.units[index] === undefined)
+        this.units[index] = unit;
 
     // Add conversion functions to measurement prototype
     if (Measurement.prototype[index] === undefined)
         Measurement.prototype[index] = (function(unit) {
 
             return function(index) {
-                return this['as'](unit, index);
+                return this.as(unit, index);
             };
 
         })(unit);
@@ -161,7 +166,7 @@ MeasurementFactory.prototype['addUnit'] = MeasurementFactory.prototypeaddUnit = 
 };
 
 // Create a unit and add it to the factory
-MeasurementFactory.prototype['newUnit'] = MeasurementFactory.prototype.newUnit = function() {
+MeasurementFactory.prototype.newUnit = function() {
     var U = function(args) {
         return Unit.apply(this, args);
     };
@@ -173,7 +178,6 @@ MeasurementFactory.prototype['newUnit'] = MeasurementFactory.prototype.newUnit =
     return newUnit;
 };
 
-var window = this || (0, eval)('this');
 
-window['MeasurementFactory'] = MeasurementFactory;
 
+module.exports = MeasurementFactory;

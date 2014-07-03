@@ -1,22 +1,36 @@
 {
   "name": "measurement",
   "description": "A flexible library for handling unit conversions",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "license": "MIT",
-  "author": "Joel Felsinger",
-  "main": "build/out/measurement.js",
+  "author": "Joel Felsinger <jffelsinger@gmail.com> (joelfredrick.com)",
+  "keywords": [
+    "measurement",
+    "measurements",
+    "metric",
+    "conversions"
+  ],
+  "main": "dist/index.js",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/jfelsinger/measurement.git"
+    "type": "git",
+    "url": "https://github.com/jfelsinger/measurement.git"
   },
   "bugs": "https://github.com/jfelsinger/measurement/issues",
   "licenses": [
-    { "type": "MIT", "url": "http://www.opensource.org/licenses/mit-license.php" }
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
   ],
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.7",
-    "closure-compiler": "~0.2.3"
+    "closure-compiler": "~0.2.3",
+    "gulp": "^3.8.5",
+    "gulp-closure-compiler": "^0.2.2",
+    "gulp-jshint": "^1.6.4",
+    "gulp-mocha": "^0.4.1",
+    "gulp-notify": "^1.4.0",
+    "gulp-uglify": "^0.3.1",
+    "mocha": "^1.20.1",
+    "should": "^4.0.4"
   }
 }
