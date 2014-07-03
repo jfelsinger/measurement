@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 gulp.task('lint', function() {
     return gulp.src([
             'gulpfile.js',
-            'tests/**/*.js',
+            'test/**/*.js',
             'src/**/*.js'
         ])
         .pipe(jshint('.jshintrc'))
@@ -18,7 +18,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('test', ['build'], function() {
-    return gulp.src('tests/**/*.js')
+    return gulp.src('test/**/*.js')
         .pipe(mocha({ reporter: 'list' }))
         .pipe(notify({ message: 'Testing task complete' }));
 });
@@ -32,4 +32,15 @@ gulp.task('build', ['lint'], function() {
         .pipe(notify({ message: 'Script building task complete' }));
 });
 
-gulp.task('default', ['test']);
+gulp.task('watch', ['test'], function() {
+    // Tests
+    gulp.watch('test/**/*.js', ['test']);
+
+    // Linting Tasks
+    gulp.watch('**/*.js', ['lint']);
+
+    // Building Tasks
+    gulp.watch('src/**/*.js', ['build']);
+});
+
+gulp.task('default', ['watch']);

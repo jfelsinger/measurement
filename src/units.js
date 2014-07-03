@@ -13,30 +13,23 @@ var UnitTypes = require('./unit-types');
  * @constructor
  */
 var Unit = function unit() {
-    /** @expose */
     this.base = arguments[0] || '';
 
     // Ordering logic changes when a third argument is introduced
     if (arguments.length >= 3) {
 
-        /** @expose */
         this.prefix = arguments[1] || '';
 
-        /** @expose */
         this.multiplier = isNaN(arguments[2]) ? 1 : +arguments[2];
 
-        /** @expose */
         this.type = arguments[3] || UnitTypes.VOID;
 
     } else {
 
-        /** @expose */
         this.prefix = '';
 
-        /** @expose */
         this.multiplier = 1;
 
-        /** @expose */
         this.type = arguments[1] || UnitTypes.VOID;
 
     }
