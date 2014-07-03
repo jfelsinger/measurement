@@ -19,6 +19,7 @@ var CompoundUnit = function compoundUnit() {
 // Adds a unit to the list of units that are compounded together
 CompoundUnit.prototype.addUnit = function(unit) {
     this.subUnits.push(unit);
+    return this;
 };
 
 // numeric getMultiplier()

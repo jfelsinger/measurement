@@ -57,7 +57,7 @@ describe('Unit', function() {
 
     });
 
-    descripe('#makeBase', function() {
+    describe('#makeBase', function() {
         // I can't remember what this function was for, so I can't really test it.
     });
 
