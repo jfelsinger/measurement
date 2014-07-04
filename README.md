@@ -14,7 +14,8 @@ npm install measurement
 To start initialize a new instance of ``MeasurementFactory``.
 
 ```
-var mf = new MeasurementFactory();
+var measurement = require('measurement');
+var mf = new measurement.MeasurementFactory();
 
 // Get a new measurement
 var measurement = mf.km(25);
