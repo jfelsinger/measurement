@@ -3,6 +3,12 @@ Measurement [![Build Status](https://secure.travis-ci.org/jfelsinger/measurement
 
 A flexible library for handling unit conversions
 
+## Installation
+
+```
+npm install measurement
+```
+
 ## Basic Usage
 
 To start initialize a new instance of ``MeasurementFactory``.
@@ -14,11 +20,20 @@ var mf = new MeasurementFactory();
 var measurement = mf.km(25);
 
 // from a string
+measurement = mf.measure('25km');
+
+// or
 measurement = mf.measurement('25km');
 
+
 // as a combination of a scalar value and a unit
+measurement = mf.measure(25, 'km');
+measurement = mf.measure(25, mf.units.km);
+
+// or
 measurement = mf.measurement(25, 'km');
 measurement = mf.measurement(25, mf.units.km);
+
 
 // Get the scalar value that represent the measurement
 var value = measurement.getValue();

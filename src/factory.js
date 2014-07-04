@@ -112,7 +112,7 @@ var MeasurementFactory = function m() {
 // (valueString)
 // (value, unitString)
 // (value, unit)
-MeasurementFactory.prototype.measurement = function() {
+MeasurementFactory.prototype.measure = MeasurementFactory.prototype.measurement = function() {
     var value = arguments[0];
     var unit = arguments[1];
 

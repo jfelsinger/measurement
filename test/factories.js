@@ -23,6 +23,27 @@ describe('MeasurementFactory', function() {
         done();
     });
 
+    describe('#measure()', function() {
+        it('should return a measurement', function(done) {
+            var mf = new MeasurementFactory();
+            var measurement = mf.measure(1, 'in');
+
+            measurement.should.be.an.instanceOf(Measurement);
+
+            done();
+        });
+
+        it('should return the correct unit', function(done) {
+            var mf = new MeasurementFactory();
+            var unit = mf.units['in'];
+            var measurement = mf.measure(1, 'in');
+
+            measurement.unit.should.match(unit);
+
+            done();
+        });
+    });
+
     describe('#measurement()', function() {
         it('should return a measurement', function(done) {
             var mf = new MeasurementFactory();

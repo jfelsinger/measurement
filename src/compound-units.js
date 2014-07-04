@@ -14,6 +14,21 @@ var CompoundUnit = function compoundUnit() {
     this.type = UnitTypes.COMPOUND;
 };
 
+function combineUnitMultipliers(units) {
+    var result = 1;
+
+    if (units.length) {
+        result = units[0].getMultiplier();
+
+        for(var i=1; i < units.length; ++i)
+        {
+            result /= units[i].getMultiplier();
+        }
+    }
+
+    return result;
+}
+
 // void addUnit(Unit unit)
 //
 // Adds a unit to the list of units that are compounded together
@@ -38,20 +53,5 @@ CompoundUnit.prototype.toString = function() {
     result += this.subUnits.join('/');
     return result;
 };
-
-function combineUnitMultipliers(units) {
-    var result = 1;
-
-    if (units.length) {
-        result = units[0].getMultiplier();
-
-        for(var i=1; i < units.length; ++i)
-        {
-            result /= units[i].getMultiplier();
-        }
-    }
-
-    return result;
-}
 
 module.exports = CompoundUnit;
