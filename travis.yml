@@ -5,3 +5,5 @@ node_js:
   - '0.8'
 env:
   - NODE_ENV=travis
+before_install: npm install -g grunt-cli mocha
+script: grunt test
