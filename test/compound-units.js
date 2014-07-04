@@ -65,7 +65,7 @@ describe('CompoundUnit', function() {
     });
 
     describe('#getMultiplier()', function() {
-        it('should return corrent multiplier', function(done) {
+        it('should return correct multiplier', function(done) {
             var unit = new CompoundUnit();
 
             unit.getMultiplier().should.be.exactly(1);
@@ -79,6 +79,29 @@ describe('CompoundUnit', function() {
 
             unit = new CompoundUnit(min,min);
             unit.getMultiplier().should.be.exactly(60/60);
+
+            done();
+        });
+    });
+
+    describe('#toString()', function() {
+        it('should convert to a string', function(done) {
+            var m = new Unit('m', '', 1, UnitTypes.LENGTH);
+            var s = new Unit('s', '', 1, UnitTypes.TIME);
+            var unit = new CompoundUnit(m,s);
+
+            unit.toString().should.be.an.String;
+            (unit + '').should.be.an.String;
+
+            done();
+        });
+
+        it('should convert to a formatted string', function(done) {
+            var m = new Unit('m', '', 1, UnitTypes.LENGTH);
+            var s = new Unit('s', '', 1, UnitTypes.TIME);
+            var unit = new CompoundUnit(m,s);
+
+            unit.toString().should.be.exactly('m/s');
 
             done();
         });

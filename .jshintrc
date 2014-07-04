@@ -20,5 +20,10 @@
     "white": true,
 
     "-W013": true,
-    "-W116": true
+    "-W116": true,
+
+    "globals": {
+        "describe": false,
+        "it": false
+    }
 }

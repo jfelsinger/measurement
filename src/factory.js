@@ -131,7 +131,7 @@ MeasurementFactory.prototype.measurement = function() {
 };
 
 // Add a unit to the factory
-MeasurementFactory.prototypeaddUnit = function(unit, index) {
+MeasurementFactory.prototype.addUnit = function(unit, index) {
     if (index === undefined)
         index = unit + '';
 

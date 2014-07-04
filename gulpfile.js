@@ -2,7 +2,6 @@
 
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
-    notify = require('gulp-notify'),
     uglify = require('gulp-uglify'),
     mocha = require('gulp-mocha');
 
@@ -13,14 +12,12 @@ gulp.task('lint', function() {
             'src/**/*.js'
         ])
         .pipe(jshint('.jshintrc'))
-        .pipe(jshint.reporter('default'))
-        .pipe(notify({ message: 'Linting task complete' }));
+        .pipe(jshint.reporter('default'));
 });
 
 gulp.task('test', ['build'], function() {
     return gulp.src('test/**/*.js')
-        .pipe(mocha({ reporter: 'list' }))
-        .pipe(notify({ message: 'Testing task complete' }));
+        .pipe(mocha({ reporter: 'list' }));
 });
 
 gulp.task('build', ['lint'], function() {
@@ -28,8 +25,7 @@ gulp.task('build', ['lint'], function() {
 
         .pipe(uglify())
 
-        .pipe(gulp.dest('dist'))
-        .pipe(notify({ message: 'Script building task complete' }));
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('watch', ['test'], function() {
