@@ -1,7 +1,7 @@
 {
   "name": "measurement",
   "description": "A flexible library for handling unit conversions",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "author": "Joel Felsinger <jffelsinger@gmail.com> (joelfredrick.com)",
   "keywords": [
