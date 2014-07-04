@@ -11,8 +11,8 @@ node_js:
 env:
   - NODE_ENV=travis
 before_install:
-  - npm install -g grunt-cli mocha
+  - npm install -g gulp mocha
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != 'measurement' ]; then cd .. && eval "mv $currentfolder
     measurement" && cd generator-venm; fi
-script: grunt test
+script: gulp test

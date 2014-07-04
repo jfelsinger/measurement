@@ -1,4 +1,4 @@
-Measurement
+Measurement [![Build Status](https://secure.travis-ci.org/jfelsinger/measurement.png?branch=master)](https://travis-ci.org/jfelsinger/measurement) [![Analytics](https://ga-beacon.appspot.com/UA-46797352-2/measurement/index)](https://github.com/igrigorik/ga-beacon)
 ===========
 
 A flexible library for handling unit conversions
