@@ -7,7 +7,6 @@ deploy:
 node_js:
   - '0.11'
   - '0.10'
-  - '0.8'
 env:
   - NODE_ENV=travis
 before_install:
