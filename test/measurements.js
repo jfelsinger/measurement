@@ -87,6 +87,42 @@ describe('Measurement', function() {
             done();
         });
 
+        it('should chain conversions to new units', function(done) {
+            var m = new Unit('m', '', 1, UnitTypes.LENGTH);
+            var km = new Unit('m', 'k', 1000, UnitTypes.LENGTH);
+            var feet = new Unit('ft', '', 0.3048, UnitTypes.LENGTH);
+            var measurement = new Measurement(12.5, m);
+
+            measurement.value.should.be.exactly(12.5);
+            measurement.getValue().should.be.exactly(12.5);
+
+            // As feet
+            measurement = measurement.as(feet);
+
+            measurement.value.should.be.approximately(41.0105, 0.0001);
+            measurement.getValue().should.be.approximately(41.0105, 0.0001);
+
+            // As km
+            measurement = measurement.as(km);
+
+            measurement.value.should.be.approximately(0.0125, 0.0001);
+            measurement.getValue().should.be.approximately(0.0125, 0.0001);
+
+            // As feet
+            measurement = measurement.as(feet);
+
+            measurement.value.should.be.approximately(41.0105, 0.0001);
+            measurement.getValue().should.be.approximately(41.0105, 0.0001);
+
+            // As meters
+            measurement = measurement.as(m);
+
+            measurement.value.should.be.approximately(12.5, 0.0001);
+            measurement.getValue().should.be.approximately(12.5, 0.0001);
+
+            done();
+        });
+
         it('should not affect original measurement', function(done) {
             var m = new Unit('m', '', 1, UnitTypes.LENGTH);
             var km = new Unit('m', 'k', 1000, UnitTypes.LENGTH);
@@ -129,6 +165,42 @@ describe('Measurement', function() {
 
             measurement.value.should.be.exactly(0.0125);
             measurement.getValue().should.be.exactly(0.0125);
+
+            done();
+        });
+
+        it('should chain conversions to new units', function(done) {
+            var m = new Unit('m', '', 1, UnitTypes.LENGTH);
+            var km = new Unit('m', 'k', 1000, UnitTypes.LENGTH);
+            var feet = new Unit('ft', '', 0.3048, UnitTypes.LENGTH);
+            var measurement = new Measurement(12.5, m);
+
+            measurement.value.should.be.exactly(12.5);
+            measurement.getValue().should.be.exactly(12.5);
+
+            // As feet
+            measurement.to(feet);
+
+            measurement.value.should.be.approximately(41.0105, 0.0001);
+            measurement.getValue().should.be.approximately(41.0105, 0.0001);
+
+            // As km
+            measurement.to(km);
+
+            measurement.value.should.be.approximately(0.0125, 0.0001);
+            measurement.getValue().should.be.approximately(0.0125, 0.0001);
+
+            // As feet
+            measurement.to(feet);
+
+            measurement.value.should.be.approximately(41.0105, 0.0001);
+            measurement.getValue().should.be.approximately(41.0105, 0.0001);
+
+            // As meters
+            measurement.to(m);
+
+            measurement.value.should.be.approximately(12.5, 0.0001);
+            measurement.getValue().should.be.approximately(12.5, 0.0001);
 
             done();
         });
