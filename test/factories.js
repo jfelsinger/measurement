@@ -51,31 +51,31 @@ describe('MeasurementFactory', function() {
             measurement.getValue().should.be.exactly(12.5);
 
             // As feet
-            var measurement = measurement.ft();
+            measurement = measurement.ft();
 
             measurement.value.should.be.approximately(41.0105, 0.0001);
             measurement.getValue().should.be.approximately(41.0105, 0.0001);
 
             // As km
-            var measurement = measurement.km();
+            measurement = measurement.km();
 
             measurement.value.should.be.approximately(0.0125, 0.0001);
             measurement.getValue().should.be.approximately(0.0125, 0.0001);
 
             // As feet
-            var measurement = measurement.ft();
+            measurement = measurement.ft();
 
             measurement.value.should.be.approximately(41.0105, 0.0001);
             measurement.getValue().should.be.approximately(41.0105, 0.0001);
 
             // As inches
-            var measurement = measurement.in();
+            measurement = measurement.in();
 
             measurement.value.should.be.approximately(492.126, 0.0001);
             measurement.getValue().should.be.approximately(492.126, 0.0001);
 
             // As meters
-            var measurement = measurement.m();
+            measurement = measurement.m();
 
             measurement.value.should.be.approximately(12.5, 0.0001);
             measurement.getValue().should.be.approximately(12.5, 0.0001);
