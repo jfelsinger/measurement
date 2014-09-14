@@ -4,6 +4,14 @@ var Measurement = require('./measurement'),
     UnitTypes = require('./unit-types'),
     Unit = require('./units');
 
+/**
+ * public constructor MeasurementFactory()
+ *
+ * creates a new instance of a measurement factory, setup
+ * with all the fixins
+ *
+ * @constructor
+ */
 var MeasurementFactory = function m() {
     this.units = {};
 
@@ -107,11 +115,16 @@ var MeasurementFactory = function m() {
     Measurement.prototype.units = this.units;
 };
 
-// Returns a measurement object
-//
-// (valueString)
-// (value, unitString)
-// (value, unit)
+/**
+ * public Measurement measure(...)
+ *
+ * Returns a measurement object
+ *
+ * args:
+ * (string valueString)
+ * (numeric value, string unitString)
+ * (numeric value, Unit unit)
+ */
 MeasurementFactory.prototype.measure = MeasurementFactory.prototype.measurement = function() {
     var value = arguments[0];
     var unit = arguments[1];
@@ -130,7 +143,11 @@ MeasurementFactory.prototype.measure = MeasurementFactory.prototype.measurement 
     return new Measurement(value, unit);
 };
 
-// Add a unit to the factory
+/**
+ * public this<MeasurementFactory> addUnit(Unit unit, string index)
+ *
+ * Add a unit to the factory
+ */
 MeasurementFactory.prototype.addUnit = function(unit, index) {
     if (index === undefined)
         index = unit + '';
@@ -165,7 +182,13 @@ MeasurementFactory.prototype.addUnit = function(unit, index) {
     return this;
 };
 
-// Create a unit and add it to the factory
+/**
+ * public Unit newUnit(...)
+ *
+ * Create a unit and add it to the factory
+ *
+ * see unit.js:Unit() comments
+ */
 MeasurementFactory.prototype.newUnit = function() {
     var U = function(args) {
         return Unit.apply(this, args);
@@ -177,7 +200,6 @@ MeasurementFactory.prototype.newUnit = function() {
 
     return newUnit;
 };
-
 
 
 module.exports = MeasurementFactory;
