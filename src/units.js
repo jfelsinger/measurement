@@ -82,7 +82,7 @@ Unit.prototype.makeBase = function(base, multiplier, type) {
  * public string toString()
  *
  * Does what you think it would do,
- * ex) '2km'
+ * ex) 'km'
  */
 Unit.prototype.toString = function() {
     return this.prefix + this.base || this.type;

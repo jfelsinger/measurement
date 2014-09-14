@@ -67,7 +67,7 @@ CompoundUnit.prototype.getMultiplier = function() {
  * public string toString()
  *
  * Does what you think it would do,
- * ex) '2km/h'
+ * ex) 'km/h'
  */
 CompoundUnit.prototype.toString = function() {
     var result = '';

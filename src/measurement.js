@@ -3,11 +3,27 @@
 var CompoundUnit = require('./compound-units'),
     UnitTypes = require('./unit-types');
 
+/**
+ * public constructor Measurement(numeric value, Unit unit)
+ *
+ * create a new instance of a measurement.
+ *
+ * @constructor
+ */
 var Measurement = function(value, unit) {
     this.value = value;
     this.unit = unit;
 };
 
+/**
+ * private CompoundUnit convertCompoundUnit(
+ *      CompoundUnit compoundUnit,
+ *      Unit unit,
+ *      int index
+ *
+ * converts one of the units, default to first unit, in a
+ * compound unit to another. Similar to converting a regular Unit
+ */
 function convertCompoundUnit(compoundUnit, unit, index) {
     // Default to the root unit.
     if (index == undefined)
@@ -29,6 +45,14 @@ function convertCompoundUnit(compoundUnit, unit, index) {
     return new CompoundUnit(subUnits);
 }
 
+/**
+ * public numeric getValue(Unit unit, int index)
+ *
+ * Returns a numeric value representative of the measurement,
+ * optionally a value of the measurement based on a seperate unit.
+ *
+ * 25km -> 25
+ */
 Measurement.prototype.getValue = function(unit, index) {
     if (typeof unit === 'string')
         unit = this.units[unit];
@@ -43,7 +67,11 @@ Measurement.prototype.getValue = function(unit, index) {
     return this.value * (this.unit.getMultiplier() / unit.getMultiplier());
 };
 
-// Returns an equivalent measurement with a new unit
+/**
+ * public Unit as(Unit unit, int index)
+ *
+ * Returns an equivalent measurement with a new unit
+ */
 Measurement.prototype.as = function(unit, index) {
     if (typeof unit === 'string')
         unit = this.units[unit];
@@ -63,7 +91,11 @@ Measurement.prototype.as = function(unit, index) {
     return new Measurement(newValue, unit);
 };
 
-// Converts a measurement to another unit of measure
+/**
+ * public this<Unit> to(Unit unit, int index)
+ *
+ * Converts a measurement to another unit of measure
+ */
 Measurement.prototype.to = function(unit, index) {
     if (typeof unit === 'string')
         unit = this.units[unit];
@@ -76,6 +108,14 @@ Measurement.prototype.to = function(unit, index) {
     return this;
 };
 
+/**
+ * public this<Unit> as(Unit unit)
+ *
+ * Makes a compund unit representing the current unit
+ * per the given unit.
+ *
+ * km.per(hr) -> km/hr
+ */
 Measurement.prototype.per = function(unit) {
     if (typeof unit === 'string')
         unit = this.units[unit];
@@ -91,8 +131,16 @@ Measurement.prototype.per = function(unit) {
     return this;
 };
 
+/**
+ * public string toString()
+ *
+ * Does what you think it would do,
+ * ex) '2km'
+ * ex) '2km/hr'
+ */
 Measurement.prototype.toString = function() {
     return this.value + this.unit;
 };
+
 
 module.exports = Measurement;
