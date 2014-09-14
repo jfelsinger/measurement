@@ -3,6 +3,12 @@
 var Unit = require('./units'),
     UnitTypes = require('./unit-types');
 
+/**
+ * public CompoundUnit([Unit,Array] ...)
+ *
+ * Create a new instance of a compound unit, possibly with
+ * included sub-units.
+ */
 var CompoundUnit = function compoundUnit() {
     this.subUnits = arguments.length ? Array.prototype.slice.call(arguments) : [];
 
@@ -14,6 +20,12 @@ var CompoundUnit = function compoundUnit() {
     this.type = UnitTypes.COMPOUND;
 };
 
+/**
+ * private numeric combineUnitMultipliers(Array<Unit> units)
+ *
+ * Returns a multiplier representative of multipliers of all the
+ * combined units
+ */
 function combineUnitMultipliers(units) {
     var result = 1;
 
@@ -29,29 +41,39 @@ function combineUnitMultipliers(units) {
     return result;
 }
 
-// void addUnit(Unit unit)
-//
-// Adds a unit to the list of units that are compounded together
+/**
+ * public void addUnit(Unit unit)
+ *
+ * Adds a unit to the list of units that are compounded together
+ */
 CompoundUnit.prototype.addUnit = function(unit) {
     this.subUnits.push(unit);
     return this;
 };
 
-// numeric getMultiplier()
-//
-// Returns a multiplier that is representative of all units in 
-// the combined unit system.
+/**
+ * public numeric getMultiplier()
+ *
+ * Returns a multiplier that is representative of all units in 
+ * the combined unit system.
+ */
 CompoundUnit.prototype.getMultiplier = function() {
     return combineUnitMultipliers(this.subUnits);
 };
 
-// Copy functionality so new units can be based off coupound units
-CompoundUnit.prototype.makeBase = Unit.prototype.makeBase;
-
+/**
+ * public string toString()
+ *
+ * Does what you think it would do,
+ * ex) '2km/h'
+ */
 CompoundUnit.prototype.toString = function() {
     var result = '';
     result += this.subUnits.join('/');
     return result;
 };
+
+// Copy functionality so new units can be based off coupound units
+CompoundUnit.prototype.makeBase = Unit.prototype.makeBase;
 
 module.exports = CompoundUnit;
