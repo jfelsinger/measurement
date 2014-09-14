@@ -3,19 +3,25 @@
 var UnitTypes = require('./unit-types');
 
 /**
+ * public constructor Unit(...)
+ *
  * Represents a unit of measurement
  *
  * args:
- * (base[0])
- * (base[0], type[1])
- * (base[0], prefix[1], multiplier[2])
- * (base[0], prefix[1], multiplier[2], type[3])
+ * (Unit base)
+ * (Unit base, UnitType type)
+ * (Unit base, string prefix, numeric multiplier)
+ * (Unit base, string prefix, numeric multiplier, UnitType type)
  * @constructor
  */
 var Unit = function unit() {
     this.base = arguments[0] || '';
 
     // Ordering logic changes when a third argument is introduced
+    //
+    // Is this a good solution? I like the argument ordering change,
+    // but it's hard to say for sure if this is the best way.
+    // #PoorBoyOverloading
     if (arguments.length >= 3) {
 
         this.prefix = arguments[1] || '';
@@ -35,6 +41,12 @@ var Unit = function unit() {
     }
 };
 
+/**
+ * public numeric getMultiplier()
+ *
+ * returns a multiplier representatice of the unit, and
+ * optionally any units this one is based off of
+ */
 Unit.prototype.getMultiplier = function() {
     var baseMultiplier = 1;
 
@@ -47,6 +59,8 @@ Unit.prototype.getMultiplier = function() {
 };
 
 /**
+ * public Unit makeBase(Unit base, numeric multiplier=1, UnitType type)
+ *
  * Creates a unit based off of the current one;
  * not as flexible as creating a unit on its own, base units have no
  * need for prefixes so that is also left out
@@ -64,10 +78,15 @@ Unit.prototype.makeBase = function(base, multiplier, type) {
     return newUnit;
 };
 
+/**
+ * public string toString()
+ *
+ * Does what you think it would do,
+ * ex) '2km'
+ */
 Unit.prototype.toString = function() {
     return this.prefix + this.base || this.type;
 };
-
 
 
 module.exports = Unit;

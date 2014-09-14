@@ -4,10 +4,12 @@ var Unit = require('./units'),
     UnitTypes = require('./unit-types');
 
 /**
- * public CompoundUnit([Unit,Array] ...)
+ * public constructor CompoundUnit([Unit,Array] ...)
  *
  * Create a new instance of a compound unit, possibly with
  * included sub-units.
+ *
+ * @constructor
  */
 var CompoundUnit = function compoundUnit() {
     this.subUnits = arguments.length ? Array.prototype.slice.call(arguments) : [];
@@ -75,5 +77,6 @@ CompoundUnit.prototype.toString = function() {
 
 // Copy functionality so new units can be based off coupound units
 CompoundUnit.prototype.makeBase = Unit.prototype.makeBase;
+
 
 module.exports = CompoundUnit;
