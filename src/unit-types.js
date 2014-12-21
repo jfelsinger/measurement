@@ -1,6 +1,4 @@
-﻿'use strict';
-
-/**
+﻿/**
  * Represents a type of base physical property that a unit can refer to
  * @enum {string}
  */

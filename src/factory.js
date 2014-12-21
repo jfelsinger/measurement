@@ -1,18 +1,18 @@
 ﻿'use strict';
 
-var Measurement = require('./measurement'),
+var Scalar = require('./scalar'),
     UnitTypes = require('./unit-types'),
     Unit = require('./units');
 
 /**
- * public constructor MeasurementFactory()
+ * public constructor ScalarFactory()
  *
- * creates a new instance of a measurement factory, setup
+ * creates a new instance of a scalar measurement factory, setup
  * with all the fixins
  *
  * @constructor
  */
-var MeasurementFactory = function m() {
+var ScalarFactory = function SF() {
     this.units = {};
 
     var siPrefixes = [
@@ -111,21 +111,24 @@ var MeasurementFactory = function m() {
     var day = new Unit('d', '', 86400, UnitTypes.TIME);
     this.addUnit(day);
 
-    // Set the units variable in the measurements prototype to match
-    Measurement.prototype.units = this.units;
+    // Set the units variable in the scalars prototype to match
+    Scalar.prototype.units = this.units;
 };
 
 /**
- * public Measurement measure(...)
+ * public Scalar measure(...)
  *
- * Returns a measurement object
+ * Returns a scalar object
  *
  * args:
  * (string valueString)
  * (numeric value, string unitString)
  * (numeric value, Unit unit)
  */
-MeasurementFactory.prototype.measure = MeasurementFactory.prototype.measurement = function() {
+ScalarFactory.prototype.measure = 
+ScalarFactory.prototype.measurement = 
+ScalarFactory.prototype.scalar = 
+function() {
     var value = arguments[0];
     var unit = arguments[1];
 
@@ -140,15 +143,15 @@ MeasurementFactory.prototype.measure = MeasurementFactory.prototype.measurement 
     if (typeof unit === 'string')
         unit = this.units[unit];
 
-    return new Measurement(value, unit);
+    return new Scalar(value, unit);
 };
 
 /**
- * public this<MeasurementFactory> addUnit(Unit unit, string index)
+ * public this<ScalarFactory> addUnit(Unit unit, string index)
  *
  * Add a unit to the factory
  */
-MeasurementFactory.prototype.addUnit = function(unit, index) {
+ScalarFactory.prototype.addUnit = function(unit, index) {
     if (index === undefined)
         index = unit + '';
 
@@ -156,9 +159,9 @@ MeasurementFactory.prototype.addUnit = function(unit, index) {
     if (this.units[index] === undefined)
         this.units[index] = unit;
 
-    // Add conversion functions to measurement prototype
-    if (Measurement.prototype[index] === undefined)
-        Measurement.prototype[index] = (function(unit) {
+    // Add conversion functions to scalar prototype
+    if (Scalar.prototype[index] === undefined)
+        Scalar.prototype[index] = (function(unit) {
 
             return function(index) {
                 return this.as(unit, index);
@@ -166,7 +169,7 @@ MeasurementFactory.prototype.addUnit = function(unit, index) {
 
         })(unit);
 
-    // Add methods for getting measurements
+    // Add methods for getting scalars
     if (this[index] === undefined)
         this[index] = (function(unit) {
 
@@ -174,7 +177,7 @@ MeasurementFactory.prototype.addUnit = function(unit, index) {
                 if (value === undefined)
                     value = 1;
 
-                return new Measurement(value, unit);
+                return new Scalar(value, unit);
             };
 
         })(unit);
@@ -189,7 +192,9 @@ MeasurementFactory.prototype.addUnit = function(unit, index) {
  *
  * see unit.js:Unit() comments
  */
-MeasurementFactory.prototype.newUnit = function() {
+ScalarFactory.prototype.createUnit = 
+ScalarFactory.prototype.newUnit = 
+function() {
     var U = function(args) {
         return Unit.apply(this, args);
     };
@@ -202,4 +207,4 @@ MeasurementFactory.prototype.newUnit = function() {
 };
 
 
-module.exports = MeasurementFactory;
+module.exports = ScalarFactory;

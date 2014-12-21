@@ -3,20 +3,20 @@
 var UnitTypes = require('../src/unit-types'),
     Unit = require('../src/units'),
     CompoundUnit = require('../src/compound-units'),
-    Measurement = require('../src/measurement'),
-    MeasurementFactory = require('../src/factory');
+    Scalar = require('../src/scalar'),
+    ScalarFactory = require('../src/factory');
 
 var should = require('should');
 
-describe('MeasurementFactory', function() {
+describe('ScalarFactory', function() {
 
     it('should construct', function(done) {
-        var mf = new MeasurementFactory();
+        var mf = new ScalarFactory();
         done();
     });
 
     it('should construct with units', function(done) {
-        var mf = new MeasurementFactory();
+        var mf = new ScalarFactory();
 
         mf.should.have.property('units').which.is.an.Object;
 
@@ -24,17 +24,17 @@ describe('MeasurementFactory', function() {
     });
 
     describe('#measure()', function() {
-        it('should return a measurement', function(done) {
-            var mf = new MeasurementFactory();
+        it('should return a scalar', function(done) {
+            var mf = new ScalarFactory();
             var measurement = mf.measure(1, 'in');
 
-            measurement.should.be.an.instanceOf(Measurement);
+            measurement.should.be.an.instanceOf(Scalar);
 
             done();
         });
 
         it('should return the correct unit', function(done) {
-            var mf = new MeasurementFactory();
+            var mf = new ScalarFactory();
             var unit = mf.units['in'];
             var measurement = mf.measure(1, 'in');
 
@@ -44,7 +44,7 @@ describe('MeasurementFactory', function() {
         });
 
         it('should have correct unit values', function(done) {
-            var mf = new MeasurementFactory();
+            var mf = new ScalarFactory();
             var measurement = mf.m(12.5); // 12.5m
 
             measurement.value.should.be.exactly(12.5);
@@ -85,17 +85,17 @@ describe('MeasurementFactory', function() {
     });
 
     describe('#measurement()', function() {
-        it('should return a measurement', function(done) {
-            var mf = new MeasurementFactory();
+        it('should return a scalar', function(done) {
+            var mf = new ScalarFactory();
             var measurement = mf.measurement(1, 'in');
 
-            measurement.should.be.an.instanceOf(Measurement);
+            measurement.should.be.an.instanceOf(Scalar);
 
             done();
         });
 
         it('should return the correct unit', function(done) {
-            var mf = new MeasurementFactory();
+            var mf = new ScalarFactory();
             var unit = mf.units['in'];
             var measurement = mf.measurement(1, 'in');
 
@@ -107,7 +107,7 @@ describe('MeasurementFactory', function() {
 
     describe('#addUnit()', function() {
         it('should add unit to factory', function(done) {
-            var mf = new MeasurementFactory();
+            var mf = new ScalarFactory();
             var hand = new Unit('hh', '', 9.84251969, UnitTypes.LENGTH);
 
             mf.units.should.not.have.key('hh');
@@ -123,7 +123,7 @@ describe('MeasurementFactory', function() {
 
     describe('#newUnit()', function() {
         it('should add a new unit', function(done) {
-            var mf = new MeasurementFactory();
+            var mf = new ScalarFactory();
 
             mf.units.should.not.have.key('hh');
             should(mf.units.hh).not.be.ok;

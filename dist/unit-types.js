@@ -1,1 +1,0 @@
-"use strict";var UnitTypes={MASS:"MASS",LENGTH:"LENGTH",VOLUME:"VOLUME",MEMORY:"MEMORY",TIME:"TIME",COMPOUND:"COMPOUND",VOID:void 0};module.exports=UnitTypes;

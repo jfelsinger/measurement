@@ -9,13 +9,19 @@ A flexible library for handling unit conversions
 npm install measurement
 ```
 
+or include it on your page.
+
+```
+<script src="measurement.min.js" type="text/javascript"></script>
+```
+
 ## Basic Usage
 
-To start initialize a new instance of ``MeasurementFactory``.
+To start initialize a new instance of the measurement factory.
 
 ```
 var measurement = require('measurement');
-var mf = new measurement.MeasurementFactory();
+var mf = new measurement.Factory();
 
 // Get a new measurement
 var measurement = mf.km(25);
