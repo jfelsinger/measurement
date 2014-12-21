@@ -13,7 +13,7 @@ describe('Unit', function() {
         meter.should.have.property('base', 'm');
         meter.prefix.should.not.be.ok;
         meter.should.have.property('prefix', '');
-        meter.should.have.property('multiplier', '1');
+        meter.should.have.property('multiplier', 1);
         meter.should.have.property('type', UnitTypes.LENGTH);
 
         done();
