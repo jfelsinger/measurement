@@ -10,7 +10,7 @@
     "metric",
     "conversions"
   ],
-  "main": "dist/index.js",
+  "main": "src/measurement.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/jfelsinger/measurement.git"
@@ -31,9 +31,7 @@
     "gulp-notify": "^1.4.0",
     "gulp-uglify": "^0.3.1",
     "mocha": "^1.20.1",
-    "should": "^4.0.4"
-  },
-  "dependencies": {
+    "should": "^4.0.4",
     "gulp-browserify": "^0.5.0",
     "gulp-rename": "^1.2.0"
   }

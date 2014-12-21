@@ -1,26 +1,9 @@
-/* globals define */
+'use strict';
 
-(function (root, factory) {
+var measurement = exports;
 
-    'use strict';
-
-    if (typeof define === 'function' && define.amd) {
-        define([], factory);
-    } else if (typeof exports === 'object') {
-        module.exports = factory();
-    } else {
-        root.measurement = factory();
-    }
-})(this, function() {
-
-    'use strict';
-
-    return {
-        Factory:        require('./factory'),
-        Scalar:         require('./scalar'),
-        UnitTypes:      require('./unit-types'),
-        Unit:           require('./units'),
-        CompoundUnit:   require('./compound-units'),
-    };
-
-});
+measurement.Factory         = require('./factory');
+measurement.Scalar          = require('./scalar');
+measurement.UnitTypes       = require('./unit-types');
+measurement.Unit            = require('./units');
+measurement.CompoundUnit    = require('./compound-units');

@@ -82,7 +82,7 @@ CompoundUnit.prototype.makeBase = Unit.prototype.makeBase;
 
 module.exports = CompoundUnit;
 
-},{"./unit-types":5,"./units":6}],2:[function(require,module,exports){
+},{"./unit-types":6,"./units":7}],2:[function(require,module,exports){
 'use strict';
 
 var Scalar = require('./scalar'),
@@ -294,35 +294,40 @@ function() {
 
 module.exports = ScalarFactory;
 
-},{"./scalar":4,"./unit-types":5,"./units":6}],3:[function(require,module,exports){
-/* globals define */
+},{"./scalar":5,"./unit-types":6,"./units":7}],3:[function(require,module,exports){
+/* jslint browser: true */
 
 (function (root, factory) {
 
     'use strict';
 
-    if (typeof define === 'function' && define.amd) {
-        define([], factory);
-    } else if (typeof exports === 'object') {
-        module.exports = factory();
-    } else {
-        root.measurement = factory();
-    }
-})(this, function() {
+    console.log('Build', root);
+
+    root.measurement = factory();
+
+}(window, function() {
 
     'use strict';
 
-    return {
-        Factory:        require('./factory'),
-        Scalar:         require('./scalar'),
-        UnitTypes:      require('./unit-types'),
-        Unit:           require('./units'),
-        CompoundUnit:   require('./compound-units'),
-    };
+    var measurement = require('./measurement');
+    console.log(measurement);
 
-});
+    return measurement;
 
-},{"./compound-units":1,"./factory":2,"./scalar":4,"./unit-types":5,"./units":6}],4:[function(require,module,exports){
+}));
+
+},{"./measurement":4}],4:[function(require,module,exports){
+'use strict';
+
+var measurement = exports;
+
+measurement.Factory         = require('./factory');
+measurement.Scalar          = require('./scalar');
+measurement.UnitTypes       = require('./unit-types');
+measurement.Unit            = require('./units');
+measurement.CompoundUnit    = require('./compound-units');
+
+},{"./compound-units":1,"./factory":2,"./scalar":5,"./unit-types":6,"./units":7}],5:[function(require,module,exports){
 'use strict';
 
 var CompoundUnit = require('./compound-units'),
@@ -486,7 +491,7 @@ Scalar.prototype.toString = function() {
 
 module.exports = Scalar;
 
-},{"./compound-units":1,"./unit-types":5}],5:[function(require,module,exports){
+},{"./compound-units":1,"./unit-types":6}],6:[function(require,module,exports){
 /**
  * Represents a type of base physical property that a unit can refer to
  * @enum {string}
@@ -505,7 +510,7 @@ var UnitTypes = {
 
 module.exports = UnitTypes;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var UnitTypes = require('./unit-types');
@@ -599,4 +604,4 @@ Unit.prototype.toString = function() {
 
 module.exports = Unit;
 
-},{"./unit-types":5}]},{},[3])
+},{"./unit-types":6}]},{},[3])

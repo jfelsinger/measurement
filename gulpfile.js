@@ -34,10 +34,14 @@ gulp.task('test', ['build'], function() {
 });
 
 gulp.task('build', ['lint'], function() {
-    return gulp.src('src/measurement.js')
+    return gulp.src('src/browser.js')
         .pipe(browserify())
+        .pipe(rename(function (path) {
+            path.basename = 'measurement';
+        }))
         .pipe(gulp.dest('./dist'))
 
+        // Minify
         .pipe(uglify())
         .pipe(rename(function (path) {
             path.basename += '.min';
