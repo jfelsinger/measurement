@@ -109,3 +109,4 @@ var metersPerSecond = speed.m().s(1);  // => 6.9444m/s
 // All of the functions that deal with units can take an index parameter to
 // deal with the individual parts of compound units
 var valueInKilometersPerSecond = speed.getValue('s', 1);
+```
