@@ -12,7 +12,7 @@ npm install measurement
 or include it on your page.
 
 ```
-<script src="measurement.min.js" type="text/javascript"></script>
+<script src="dist/measurement.min.js" type="text/javascript"></script>
 ```
 
 ## Basic Usage
