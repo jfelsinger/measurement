@@ -23,7 +23,6 @@
     }
   ],
   "devDependencies": {
-    "closure-compiler": "~0.2.3",
     "gulp": "^3.8.5",
     "gulp-closure-compiler": "^0.2.2",
     "gulp-jshint": "^1.6.4",
