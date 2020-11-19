@@ -11,7 +11,7 @@ npm install measurement
 
 or include it on your page.
 
-```
+```html
 <script src="dist/measurement.min.js" type="text/javascript"></script>
 ```
 
@@ -19,7 +19,7 @@ or include it on your page.
 
 To start initialize a new instance of the measurement factory.
 
-```
+```js
 var measurement = require('measurement');
 var mf = new measurement.Factory();
 
@@ -55,7 +55,7 @@ var valueInMeters = measurement.getValue('m');  // or .getValue(mf.units.m);
 Measurements can be converted from one unit to another by calling
 a unit method or by using the generic ``to()`` and ``as()`` methods.
 
-```
+```js
 measurement = mf.km(8);
 
 // convert to miles using the unit method
@@ -76,7 +76,7 @@ Compound units can be built up from the base units of ``TIME``, ``LENGTH``,
 ``VOLUME``, ``MEMORY``,  and ``MASS`` to represent values such as speed or
 transfer rate.
 
-```
+```js
 var distance = mf.km(25);
 
 // The per() method adds another unit to the current, compounding it
@@ -96,7 +96,7 @@ units bunched together. The unit methods act on separate pieces of compound unit
 while the ``to()`` and ``as()`` methods act differently whether another compound
 unit or a base unit is supplied.
 
-```
+```js
 var speed = mf.km(25).per('hr'); // => 25km/h
 
 // Using the unit method to convert to mi/h
