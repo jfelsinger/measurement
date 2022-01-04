@@ -1,0 +1,12 @@
+{
+    "spec": [
+        "src/**/*.test.ts",
+        "src/**/*.tests.ts"
+    ],
+    "recursive": true,
+    "require": [
+        "ts-node/register",
+        "source-map-support/register"
+    ],
+    "full-trace": true
+}

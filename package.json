@@ -1,7 +1,7 @@
 {
   "name": "measurement",
   "description": "A flexible library for handling unit conversions",
-  "version": "0.2.1",
+  "version": "2.0.0",
   "license": "MIT",
   "author": "Joel Felsinger <jffelsinger@gmail.com> (joelfredrick.com)",
   "keywords": [
@@ -10,7 +10,20 @@
     "metric",
     "conversions"
   ],
-  "main": "src/measurement.js",
+  "main": "dist/cjs/measurement.js",
+  "module": "dist/esm/measurement.js",
+  "types": "dist/types/measurement.d.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:types && npm run build:cjs && npm run build:esm",
+    "build:types": "rm -rf dist/types && tsc -p config/tsconfig.types.json",
+    "build:cjs": "rm -rf dist/cjs && tsc -p config/tsconfig.cjs.json",
+    "build:esm": "rm -rf dist/esm && tsc -p config/tsconfig.esm.json",
+    "test": "nyc mocha",
+    "test:mocha": "mocha"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jfelsinger/measurement.git"
@@ -23,15 +36,29 @@
     }
   ],
   "devDependencies": {
-    "gulp": "^3.8.5",
-    "gulp-closure-compiler": "^0.2.2",
-    "gulp-jshint": "^1.6.4",
-    "gulp-mocha": "^0.4.1",
-    "gulp-notify": "^1.4.0",
-    "gulp-uglify": "^0.3.1",
-    "mocha": "^1.20.1",
-    "should": "^4.0.4",
-    "gulp-browserify": "^0.5.0",
-    "gulp-rename": "^1.2.0"
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.0.0",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.3",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
   }
 }

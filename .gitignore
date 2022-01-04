@@ -3,8 +3,10 @@
 *.orig
 desktop.ini
 index.html
+src_old
 
 .DS_Store
 npm-debug.log
 node_modules
+.nyc_output
 demo.html
