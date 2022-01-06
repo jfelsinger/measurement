@@ -4,6 +4,6 @@ export default {
     input: 'dist/esm/browser.js',
     output: [
         { file: 'dist/measurement.js', format: 'iife' },
-        { file: 'dist/measurement.js', format: 'iife', plugins:[terser()] },
+        { file: 'dist/measurement.min.js', format: 'iife', plugins:[terser()] },
     ],
 }

@@ -21,7 +21,7 @@
     "build:types": "rm -rf dist/types && tsc -p tsconfig.types.json",
     "build:cjs": "rm -rf dist/cjs && tsc -p tsconfig.cjs.json",
     "build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
-    "rollup": "rollup",
+    "rollup": "rollup --config",
     "test": "nyc mocha",
     "test:mocha": "mocha"
   },
