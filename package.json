@@ -17,10 +17,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:types && npm run build:cjs && npm run build:esm",
-    "build:types": "rm -rf dist/types && tsc -p configs/tsconfig.types.json",
-    "build:cjs": "rm -rf dist/cjs && tsc -p configs/tsconfig.cjs.json",
-    "build:esm": "rm -rf dist/esm && tsc -p configs/tsconfig.esm.json",
+    "build": "npm run build:cjs && npm run build:types && npm run build:esm",
+    "build:types": "rm -rf dist/types && tsc -p tsconfig.types.json",
+    "build:cjs": "rm -rf dist/cjs && tsc -p tsconfig.cjs.json",
+    "build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
     "test": "nyc mocha",
     "test:mocha": "mocha"
   },

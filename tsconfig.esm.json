@@ -1,8 +1,8 @@
 
 {
-    "extends": "../tsconfig",
+    "extends": "./tsconfig",
     "compilerOptions": {
         "module": "ESNext",
-        "outDir": "../dist/esm"
+        "outDir": "./dist/esm"
     }
 }
