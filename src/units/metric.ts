@@ -87,7 +87,7 @@ const baseUnits = [
     bit, byte,
 ]
 
-const siPrefixes = [
+export const siPrefixes = [
     { prefix: { abbr: 'Y',  name: 'yotta' }, multiplier: Math.pow(10, 24) },
     { prefix: { abbr: 'Z',  name: 'zetta' }, multiplier: Math.pow(10, 21) },
     { prefix: { abbr: 'E',  name: 'exa'   }, multiplier: Math.pow(10, 18) },

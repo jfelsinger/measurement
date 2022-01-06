@@ -12,6 +12,8 @@ import getUnitTypeName from './lib/getUnitTypeName';
 export interface iCompoundUnit extends iUnit {
     /** Add a unit to the current compound's list */
     addUnit(unit: iUnit, toFront?: boolean): iCompoundUnit;
+
+    isInverse: boolean;
 }
 
 export interface iCompoundUnitOptions {
@@ -33,6 +35,7 @@ export interface iCompoundUnitOptions {
 export class CompoundUnit implements iCompoundUnit {
     subUnits: iUnit[] = [];
     protected __name?: string;
+    isInverse: boolean = false;
 
     /** The compound quantity measured by this unit. */
     get unitType() { return UnitType.Compound; }

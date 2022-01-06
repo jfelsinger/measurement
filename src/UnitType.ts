@@ -6,12 +6,19 @@ enum UnitType {
     Length = 'Length',
     Volume = 'Volume',
     Time = 'Time',
+
+    Memory = 'Memory',
+
     Angle = 'Angle',
     Temperature = 'Temperature',
+
+    Charge = 'Charge',
     Energy = 'Energy',
+
     Force = 'Force',
+
     Pressure = 'Pressure',
-    Memory = 'Memory',
+
 
     /**
      * Describes a combination of units instead of just a singular quantity,

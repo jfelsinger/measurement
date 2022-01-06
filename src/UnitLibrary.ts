@@ -66,3 +66,4 @@ export class UnitLibrary {
 }
 
 export const defaultLibrary = new UnitLibrary();
+export default defaultLibrary;
