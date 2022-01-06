@@ -45,6 +45,8 @@ describe('Scalar', () => {
         expect( Math.round(Scalar.get(50, 'mi').to('km').value) ).to.equal(80);
         expect( Math.round(Scalar.get(50, 'mi/h').to('km/h').value) ).to.equal(80);
         expect( Math.round(Scalar.get(50, 'mph').to('km/h').value) ).to.equal(80);
+
+        expect( Math.round(Scalar.get(1, 'day').to('second').value) ).to.equal(86400);
     });
 
 });
