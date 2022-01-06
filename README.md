@@ -72,7 +72,7 @@ measurement.to(mf.units.mi);
 
 ## Compound Units
 
-Compound units can be built up from the base units of ``TIME``, ``LENGTH``, 
+Compound units can be built up from the base units of ``TIME``, ``LENGTH``,
 ``VOLUME``, ``MEMORY``,  and ``MASS`` to represent values such as speed or
 transfer rate.
 
@@ -92,7 +92,7 @@ var acceleration = speed.per('s'); // mf.km(25).per('hr').per('s')
 ## Converting Compound Units
 
 Measurements with compound units are special and act as an array of different
-units bunched together. The unit methods act on separate pieces of compound units, 
+units bunched together. The unit methods act on separate pieces of compound units,
 while the ``to()`` and ``as()`` methods act differently whether another compound
 unit or a base unit is supplied.
 

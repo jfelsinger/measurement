@@ -18,9 +18,9 @@
   ],
   "scripts": {
     "build": "npm run build:types && npm run build:cjs && npm run build:esm",
-    "build:types": "rm -rf dist/types && tsc -p config/tsconfig.types.json",
-    "build:cjs": "rm -rf dist/cjs && tsc -p config/tsconfig.cjs.json",
-    "build:esm": "rm -rf dist/esm && tsc -p config/tsconfig.esm.json",
+    "build:types": "rm -rf dist/types && tsc -p configs/tsconfig.types.json",
+    "build:cjs": "rm -rf dist/cjs && tsc -p configs/tsconfig.cjs.json",
+    "build:esm": "rm -rf dist/esm && tsc -p configs/tsconfig.esm.json",
     "test": "nyc mocha",
     "test:mocha": "mocha"
   },
