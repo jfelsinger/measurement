@@ -1,5 +1,13 @@
 import { iUnit } from './Unit';
 import { iUnitLibrary } from './UnitLibrary';
+interface iConvertTo {
+    (unitArg: iUnit | string, index?: number): iScalar;
+    [name: string]: (index?: number) => iScalar;
+}
+interface iConvertPer {
+    (unitArg: iUnit | string): iScalar;
+    [name: string]: () => iScalar;
+}
 export default iScalar;
 export interface iScalar {
     /**
@@ -11,9 +19,9 @@ export interface iScalar {
      */
     getValue(unitArg?: iUnit | string, index?: number): number;
     /** Returns an equivalent scalar based on a different unit */
-    as(unitArg: iUnit | string, index?: number): iScalar;
+    as: iConvertTo;
     /** Converts the current instance of scalar to another unit of measure */
-    to(unitArg: iUnit | string, index?: number): iScalar;
+    to: iConvertTo;
     /**
      * Make a compound unit representing the current unit per the given one.
      *
@@ -34,6 +42,8 @@ export interface iScalar {
      * - '25 kilometers'
      */
     toString(useAbbreviation?: boolean): string;
+    value: number;
+    unit: iUnit;
 }
 export interface iScalarOptions {
     value: number;
@@ -41,10 +51,11 @@ export interface iScalarOptions {
     library?: iUnitLibrary;
 }
 export declare class Scalar implements iScalar {
-    value: number;
+    protected __value: number;
     unit: iUnit;
     library: iUnitLibrary;
     constructor(options: iScalarOptions);
+    get value(): number;
     static get(value: number, unit: iUnit | string, library?: iUnitLibrary): Scalar;
     /**
      * Returns a numeric value representative of the scalar value.
@@ -57,18 +68,21 @@ export declare class Scalar implements iScalar {
     /**
      * Returns an equivalent scalar based on a different unit
      */
-    as(unitArg: iUnit | string, index?: number): Scalar;
+    as: iConvertTo;
+    protected convertAs(unitArg: iUnit | string, index?: number): Scalar;
     /**
      * Converts the current instance of scalar to another unit of measure
      */
-    to(unitArg: iUnit | string, index?: number): this;
+    to: iConvertTo;
+    protected convertTo(unitArg: iUnit | string, index?: number): this;
     /**
      * Make a compound unit representing the current unit per the given one.
      *
      * km.per(hr); // km/hr
      * someAmountOfKm.per(hr); // km/hr
      */
-    per(unitArg: iUnit | string): Scalar;
+    per: iConvertPer;
+    protected convertPer(unitArg: iUnit | string): Scalar;
     /**
      * Convert the unit of the scalar to another and return it.
      */

@@ -20,3 +20,4 @@ Object.defineProperty(exports, "UnitLibrary", { enumerable: true, get: function 
 const UnitLibrary_2 = require("./UnitLibrary");
 Object.defineProperty(exports, "library", { enumerable: true, get: function () { return UnitLibrary_2.defaultLibrary; } });
 __exportStar(require("./Scalar"), exports);
+__exportStar(require("./Measurement"), exports);

@@ -59,11 +59,11 @@ export class Unit {
             name: this.__name,
         };
         if (options === null || options === void 0 ? void 0 : options.base)
-            baseOptions.base = options.base;
+            baseOptions.base = new UnitBase(options.base);
         if (options === null || options === void 0 ? void 0 : options.baseUnit)
             baseOptions.baseUnit = options.baseUnit;
         if (options === null || options === void 0 ? void 0 : options.prefix)
-            baseOptions.prefix = options.prefix;
+            baseOptions.prefix = new UnitBase(options.prefix);
         if (options === null || options === void 0 ? void 0 : options.unitType)
             baseOptions.unitType = options.unitType;
         if (options === null || options === void 0 ? void 0 : options.multiplier)

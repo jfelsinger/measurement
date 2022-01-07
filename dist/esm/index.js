@@ -6,3 +6,4 @@ export { UnitLibrary } from './UnitLibrary';
 import { defaultLibrary } from './UnitLibrary';
 export { defaultLibrary as library };
 export * from './Scalar';
+export * from './Measurement';

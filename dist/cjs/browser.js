@@ -19,12 +19,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const measurement = __importStar(require("./index"));
-window.measurement = measurement;
-measurement.library.unitsList.forEach((unit) => {
-    let m = measurement;
-    if (!m[unit.name])
-        m[unit.name] = unit;
-    if (!m[unit.abbr])
-        m[unit.abbr] = unit;
+const bundle = __importStar(require("./index"));
+window.measurement = bundle.measurement;
+Object.keys(bundle).forEach((key) => {
+    window.measurement[key] = bundle[key];
 });
+// measurement.library.unitsList.forEach((unit) => {
+//     let m = (<any>measurement);
+//     if (!m[unit.name]) m[unit.name] = unit;
+//     if (!m[unit.abbr]) m[unit.abbr] = unit;
+// });

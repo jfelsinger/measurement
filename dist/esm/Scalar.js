@@ -11,8 +11,20 @@ export class Scalar {
             this.unit = library.getUnit(options.unit);
         else
             this.unit = options.unit;
-        this.value = options.value;
+        this.__value = options.value;
+        const as = this.as = this.convertAs.bind(this);
+        const to = this.to = this.convertTo.bind(this);
+        const per = this.per = this.convertPer.bind(this);
+        this.library.unitsList.forEach((unit) => {
+            this.as[unit.name] = (index) => as(unit, index);
+            // this.as[unit.abbr] = (index?: number) => this.as(unit, index);
+            this.to[unit.name] = (index) => this.to(unit, index);
+            // this.to[unit.abbr] = (index?: number) => this.to(unit, index);
+            this.per[unit.name] = () => per(unit);
+            // this.per[unit.abbr] = () => this.per(unit);
+        });
     }
+    get value() { return this.getValue(); }
     static get(value, unit, library) {
         return new Scalar({
             value,
@@ -29,39 +41,27 @@ export class Scalar {
      */
     getValue(unitArg, index = 0) {
         if (!unitArg)
-            return this.value;
+            return this.__value;
         // else:
         const currentUnit = this.unit;
         let unit = this.getConvertedUnit(unitArg, index);
-        return multiply(this.value, divide(currentUnit.multiplier, unit.multiplier));
+        return multiply(this.__value, divide(currentUnit.multiplier, unit.multiplier));
     }
-    /**
-     * Returns an equivalent scalar based on a different unit
-     */
-    as(unitArg, index = 0) {
-        const currentUnit = this.unit;
+    convertAs(unitArg, index = 0) {
         let unit = this.getConvertedUnit(unitArg, index);
         let value = this.getValue(unitArg, index);
         return this.clone({ unit, value });
     }
-    /**
-     * Converts the current instance of scalar to another unit of measure
-     */
-    to(unitArg, index = 0) {
+    convertTo(unitArg, index = 0) {
         let converted = this.as(unitArg, index);
-        this.value = converted.value;
+        this.__value = converted.value;
         this.unit = converted.unit;
         return this;
     }
-    /**
-     * Make a compound unit representing the current unit per the given one.
-     *
-     * km.per(hr); // km/hr
-     * someAmountOfKm.per(hr); // km/hr
-     */
-    per(unitArg) {
+    convertPer(unitArg) {
         let resultUnit;
         let currentUnit = this.unit.clone();
+        let currentUnit2 = this.unit;
         let unit = this.getUnitFromLibrary(unitArg);
         if (currentUnit.unitType === UnitType.Compound) {
             resultUnit = currentUnit;
@@ -71,7 +71,7 @@ export class Scalar {
         }
         resultUnit.addUnit(unit);
         return this.clone({
-            value: this.value,
+            value: this.__value,
             unit: resultUnit,
         });
     }
@@ -87,9 +87,9 @@ export class Scalar {
         }
         if (!unit.matchesType(currentUnit))
             throw new Error('Invalid Units: a unit of type `' +
-                this.unit +
+                this.unit.toString(false) +
                 '` cannot be converted to a unit of type `' +
-                unit + '`');
+                unit.toString(false) + '`');
         return unit;
     }
     /**
@@ -107,7 +107,7 @@ export class Scalar {
     clone(options) {
         var _a, _b, _c;
         return new Scalar({
-            value: (_a = options === null || options === void 0 ? void 0 : options.value) !== null && _a !== void 0 ? _a : this.value,
+            value: (_a = options === null || options === void 0 ? void 0 : options.value) !== null && _a !== void 0 ? _a : this.__value,
             unit: (_b = options === null || options === void 0 ? void 0 : options.unit) !== null && _b !== void 0 ? _b : this.unit.clone(),
             library: (_c = options === null || options === void 0 ? void 0 : options.library) !== null && _c !== void 0 ? _c : this.library,
         });
@@ -121,7 +121,7 @@ export class Scalar {
     toString(useAbbreviation = true, tryToPluralize = true) {
         if (useAbbreviation)
             return `${this.value}${this.unit.toString(useAbbreviation)}`;
-        if (tryToPluralize && this.value != 1)
+        if (tryToPluralize && this.__value != 1)
             return `${this.value} ${this.unit.toString(useAbbreviation)}s`;
         return `${this.value} ${this.unit.toString(useAbbreviation)}`;
     }

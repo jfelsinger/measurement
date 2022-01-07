@@ -82,7 +82,6 @@ export class CompoundUnit implements iCompoundUnit {
         return new CompoundUnit({
             units,
         });
-
     }
 
     constructor(options: iCompoundUnitOptions) {

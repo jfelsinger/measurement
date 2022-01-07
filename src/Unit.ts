@@ -140,9 +140,9 @@ export class Unit implements iUnit {
             name: this.__name,
         }
 
-        if (options?.base) baseOptions.base = options.base;
+        if (options?.base) baseOptions.base = new UnitBase(options.base);
         if (options?.baseUnit) baseOptions.baseUnit = options.baseUnit;
-        if (options?.prefix) baseOptions.prefix = options.prefix;
+        if (options?.prefix) baseOptions.prefix = new UnitBase(options.prefix);
         if (options?.unitType) baseOptions.unitType = options.unitType;
         if (options?.multiplier) baseOptions.multiplier = options.multiplier;
         if (options?.name) baseOptions.name = options.name;

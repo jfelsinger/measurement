@@ -10,3 +10,4 @@ export { defaultLibrary as library };
 
 export * from './Scalar';
 
+export * from './Measurement';

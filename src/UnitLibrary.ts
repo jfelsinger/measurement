@@ -3,10 +3,13 @@ import { units, unitsList } from './units/index';
 import { CompoundUnit, iCompoundUnit } from './CompoundUnit';
 
 export interface iUnitLibrary {
+    unitsList: Set<iUnit>;
     units: { [key:string]: iUnit };
     getUnit(key: string): iUnit;
     addUnit(unit: iUnit): iUnitLibrary;
     deleteUnit(unit: iUnit): iUnitLibrary;
+
+    hasKey(key: string): boolean;
 }
 
 /**

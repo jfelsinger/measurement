@@ -1,12 +1,14 @@
 import { iUnit } from './Unit';
 import { iCompoundUnit } from './CompoundUnit';
 export interface iUnitLibrary {
+    unitsList: Set<iUnit>;
     units: {
         [key: string]: iUnit;
     };
     getUnit(key: string): iUnit;
     addUnit(unit: iUnit): iUnitLibrary;
     deleteUnit(unit: iUnit): iUnitLibrary;
+    hasKey(key: string): boolean;
 }
 /**
  * A library for looking up units from those defined in the library.

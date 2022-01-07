@@ -4,6 +4,17 @@ import { iCompoundUnit, CompoundUnit } from './CompoundUnit';
 import { iUnitLibrary, defaultLibrary } from './UnitLibrary';
 import { multiply, divide } from './lib/safeMath';
 
+interface iConvertTo {
+    (unitArg: iUnit|string, index?: number): iScalar,
+    [name:string]: (index?: number) => iScalar,
+}
+
+interface iConvertPer {
+    (unitArg: iUnit|string): iScalar,
+    [name:string]: () => iScalar,
+}
+
+
 export default iScalar
 export interface iScalar {
     /**
@@ -16,10 +27,10 @@ export interface iScalar {
     getValue(unitArg?: iUnit|string, index?: number): number;
 
     /** Returns an equivalent scalar based on a different unit */
-    as(unitArg: iUnit|string, index?: number): iScalar;
+    as: iConvertTo;
 
     /** Converts the current instance of scalar to another unit of measure */
-    to(unitArg: iUnit|string, index?: number): iScalar;
+    to: iConvertTo;
 
     /**
      * Make a compound unit representing the current unit per the given one.
@@ -39,6 +50,9 @@ export interface iScalar {
      * - '25 kilometers'
      */
     toString(useAbbreviation?: boolean): string;
+
+    value: number,
+    unit: iUnit,
 }
 
 export interface iScalarOptions {
@@ -48,9 +62,10 @@ export interface iScalarOptions {
 }
 
 export class Scalar implements iScalar {
-    value: number;
+    protected __value: number;
     unit: iUnit;
     library:iUnitLibrary;
+
 
     constructor(options: iScalarOptions) {
         const library = options.library ?? defaultLibrary;
@@ -61,8 +76,25 @@ export class Scalar implements iScalar {
         else
             this.unit = options.unit;
 
-        this.value = options.value;
+        this.__value = options.value;
+
+        const as = this.as = (<any>this).convertAs.bind(this);
+        const to = this.to = (<any>this).convertTo.bind(this);
+        const per = this.per = (<any>this).convertPer.bind(this);
+
+        this.library.unitsList.forEach((unit) => {
+            this.as[unit.name] = (index?: number) => as(unit, index);
+            // this.as[unit.abbr] = (index?: number) => this.as(unit, index);
+
+            this.to[unit.name] = (index?: number) => this.to(unit, index);
+            // this.to[unit.abbr] = (index?: number) => this.to(unit, index);
+
+            this.per[unit.name] = () => per(unit);
+            // this.per[unit.abbr] = () => this.per(unit);
+        });
     }
+
+    get value(): number { return this.getValue(); }
 
     static get(value: number, unit: iUnit|string, library?: iUnitLibrary) {
         return new Scalar({
@@ -81,19 +113,19 @@ export class Scalar implements iScalar {
      */
     getValue(unitArg?: iUnit|string, index: number = 0) {
         if (!unitArg)
-            return this.value;
+            return this.__value;
         // else:
 
         const currentUnit = this.unit;
         let unit = this.getConvertedUnit(unitArg, index);
-        return multiply(this.value, divide(currentUnit.multiplier, unit.multiplier));
+        return multiply(this.__value, divide(currentUnit.multiplier, unit.multiplier));
     }
 
     /**
      * Returns an equivalent scalar based on a different unit
      */
-    as(unitArg: iUnit|string, index: number = 0) {
-        const currentUnit = this.unit;
+    as: iConvertTo;
+    protected convertAs(unitArg: iUnit|string, index: number = 0) {
         let unit = this.getConvertedUnit(unitArg, index);
         let value = this.getValue(unitArg, index);
         return this.clone({ unit, value })
@@ -102,9 +134,10 @@ export class Scalar implements iScalar {
     /**
      * Converts the current instance of scalar to another unit of measure
      */
-    to(unitArg: iUnit|string, index: number = 0) {
+    to: iConvertTo;
+    protected convertTo(unitArg: iUnit|string, index: number = 0) {
         let converted = this.as(unitArg, index);
-        this.value = converted.value;
+        this.__value = converted.value;
         this.unit = converted.unit;
         return this;
     }
@@ -115,9 +148,11 @@ export class Scalar implements iScalar {
      * km.per(hr); // km/hr
      * someAmountOfKm.per(hr); // km/hr
      */
-    per(unitArg: iUnit|string) {
+    per: iConvertPer;
+    protected convertPer(unitArg: iUnit|string) {
         let resultUnit: iCompoundUnit;
         let currentUnit = this.unit.clone();
+        let currentUnit2 = this.unit;
         let unit = this.getUnitFromLibrary(unitArg);
 
         if (currentUnit.unitType === UnitType.Compound) {
@@ -129,7 +164,7 @@ export class Scalar implements iScalar {
         resultUnit.addUnit(unit);
 
         return this.clone({
-            value: this.value,
+            value: this.__value,
             unit: resultUnit,
         });
     }
@@ -149,9 +184,9 @@ export class Scalar implements iScalar {
         if (!unit.matchesType(currentUnit))
             throw new Error(
                 'Invalid Units: a unit of type `' +
-                this.unit +
+                this.unit.toString(false) +
                 '` cannot be converted to a unit of type `' +
-                unit + '`'
+                unit.toString(false) + '`'
             );
 
         return unit;
@@ -173,7 +208,7 @@ export class Scalar implements iScalar {
     /** Return a clone of the current scalar instance */
     clone(options?: { value?: number, unit?: iUnit, library?: iUnitLibrary }) {
         return new Scalar({
-            value: options?.value ?? this.value,
+            value: options?.value ?? this.__value,
             unit: options?.unit ?? this.unit.clone(),
             library: options?.library ?? this.library,
         });
@@ -189,7 +224,7 @@ export class Scalar implements iScalar {
         if (useAbbreviation)
             return `${this.value}${this.unit.toString(useAbbreviation)}`;
 
-        if (tryToPluralize && this.value != 1)
+        if (tryToPluralize && this.__value != 1)
             return `${this.value} ${this.unit.toString(useAbbreviation)}s`;
 
         return `${this.value} ${this.unit.toString(useAbbreviation)}`;
