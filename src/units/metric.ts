@@ -26,6 +26,7 @@ export const hour = new Unit({
     baseUnit: minute,
     multiplier: 60,
 })
+hour.aliases.push('hr');
 unitsList.add(hour);
 
 export const day = new Unit({
@@ -47,6 +48,7 @@ export const year = new Unit({
     baseUnit: day,
     multiplier: 365.25,
 })
+year.aliases.push('y');
 unitsList.add(year);
 
 
@@ -128,4 +130,7 @@ baseUnits.forEach((baseUnit) => {
 unitsList.forEach((unit) => {
     units[unit.name] = unit;
     units[unit.abbr] = unit;
+    unit.aliases?.forEach((alias) => {
+        units[alias] = unit;
+    });
 });

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/units/astronomical.ts</title>
+    <title>Code coverage report for src/lib/getUnitTypeName.tests.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/units</a> astronomical.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/lib</a> getUnitTypeName.tests.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -91,77 +91,62 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { UnitBase } from '../UnitBase';
-import { UnitType } from '../UnitType';
-import { iUnit, Unit } from '../Unit';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { expect } from 'chai';
+import 'mocha';
+import getUnitTypeName from './getUnitTypeName';
+import library from '../UnitLibrary';
+import { CompoundUnit } from '../CompoundUnit';
 &nbsp;
-import * as metric from './metric';
+describe('getUnitTypeName', () =&gt; {
 &nbsp;
-const bases = [
-    { base: new UnitBase({ abbr: 'ly',  name: 'lightyear'         }), metricBase: metric.meter, multiplier:  9_460_730_472_580_800 },
-    { base: new UnitBase({ abbr: 'Ls',  name: 'light-second'      }), metricBase: metric.meter, multiplier:            299_792_458 },
-    { base: new UnitBase({ abbr: 'Lm',  name: 'light-minute'      }), metricBase: metric.meter, multiplier:         17_987_547_480 },
-    { base: new UnitBase({ abbr: 'Lh',  name: 'light-hour'        }), metricBase: metric.meter, multiplier:      1_079_252_848_800 },
-    { base: new UnitBase({ abbr: 'Ld',  name: 'light-day'         }), metricBase: metric.meter, multiplier:     25_902_068_371_200 },
-    { base: new UnitBase({ abbr: 'Lw',  name: 'light-week'        }), metricBase: metric.meter, multiplier:    181_314_478_598_400 },
-    { base: new UnitBase({ abbr: 'au',  name: 'astronomical unit' }), metricBase: metric.meter, multiplier:        149_597_870_700 },
-    { base: new UnitBase({ abbr: 'pc',  name: 'parsec'            }), metricBase: metric.meter, multiplier: 30_856_775_814_913_673 },
-];
+    it('should give a named unit type for a unit', () =&gt; {
+        let { mile } = library.units;
+        let name = getUnitTypeName(mile);
 &nbsp;
-export const unitsList: Set&lt;iUnit&gt; = new Set&lt;iUnit&gt;();
-export const units: { [key:string]: iUnit } = {};
-&nbsp;
-bases.forEach((unitBase) =&gt; {
-    const unit = new Unit({
-        base: unitBase.base,
-        baseUnit: unitBase.metricBase,
-        multiplier: unitBase.multiplier,
+        expect(name).to.equal('Length');
+        console.log(name);
     });
 &nbsp;
-    unitsList.add(unit);
-    units[unit.name] = unit;
-    units[unit.abbr] = unit;
+    it('should give a named unit type for a compound unit', () =&gt; {
+        let { mph } = library.units;
+        let name = getUnitTypeName(mph);
+&nbsp;
+&nbsp;
+        expect(name).to.equal('Compound:Length.Time');
+        console.log(name);
+    });
+&nbsp;
 });
 &nbsp;
-export default units;
+&nbsp;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -169,7 +154,7 @@ export default units;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu Jan 06 2022 21:42:05 GMT-0500 (Eastern Standard Time)
+                at Thu Jan 06 2022 20:46:46 GMT-0500 (Eastern Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -17,5 +17,12 @@ export const systems = {
         unitsList.add(unit);
         units[unit.name] = unit;
         units[unit.abbr] = unit;
+        unit.aliases?.forEach((alias) => {
+            units[alias] = unit;
+        });
+    });
+
+    Object.keys(system.units).forEach((key) => {
+        units[key] = system.units[key];
     });
 });

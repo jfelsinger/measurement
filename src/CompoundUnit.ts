@@ -24,6 +24,7 @@ export interface iCompoundUnitOptions {
     name?: string;
 
     abbr?: string;
+    aliases?: string[];
 }
 
 /**
@@ -36,6 +37,7 @@ export class CompoundUnit implements iCompoundUnit {
     subUnits: iUnit[] = [];
     protected __name?: string;
     isInverse: boolean = false;
+    aliases: string[] = [];
 
     /** The compound quantity measured by this unit. */
     get unitType() { return UnitType.Compound; }
@@ -88,6 +90,7 @@ export class CompoundUnit implements iCompoundUnit {
         this.subUnits = options.units || [];
         this.__name = options.name;
         this.__abbr = options.abbr;
+        if (options.aliases) this.aliases = options.aliases;
     }
 
     /**
@@ -118,10 +121,12 @@ export class CompoundUnit implements iCompoundUnit {
         let baseOptions = {
             units: this.subUnits,
             name: this.__name,
+            aliases: this.aliases,
         }
 
         if (options?.units) baseOptions.units = options.units;
         if (options?.name) baseOptions.name = options.name;
+        if (options?.aliases) baseOptions.aliases = options.aliases;
 
         return new CompoundUnit(baseOptions);
     }

@@ -10,6 +10,7 @@ interface iUnitOptionsA {
     multiplier?: number;
     unitType?: UnitType;
     name?: string;
+    aliases?: string[];
 }
 
 interface iUnitOptionsB {
@@ -20,6 +21,7 @@ interface iUnitOptionsB {
     multiplier?: number;
     unitType?: UnitType;
     name?: string;
+    aliases?: string[];
 }
 
 
@@ -40,6 +42,7 @@ export interface iUnit extends iUnitBase {
 
     /** The name of the unit: meter, kilogram, etc. */
     name: string;
+    aliases: string[];
 
     /**
      * The ratio of this unit in relation to the base unit. A kilogram would
@@ -66,6 +69,7 @@ export class Unit implements iUnit {
     base: iUnitBase;
     prefix?: iUnitBase;
     baseMultiplier: number;
+    aliases: string[] = [];
 
     /** The type of quantity measured by this unit: mass, time, length, etc. */
     unitType: UnitType;
@@ -115,6 +119,7 @@ export class Unit implements iUnit {
     constructor(options: iUnitOptions) {
         this.base = UnitBase.get(options.base || (<Unit>options.baseUnit)?.base);
 
+        if (options.aliases) this.aliases = options.aliases;
         this.baseUnit = options.baseUnit;
         this.unitType =
             options.unitType ||
@@ -138,6 +143,7 @@ export class Unit implements iUnit {
             unitType: this.unitType,
             multiplier: this.baseMultiplier,
             name: this.__name,
+            aliases: this.aliases.slice(),
         }
 
         if (options?.base) baseOptions.base = new UnitBase(options.base);
@@ -146,6 +152,7 @@ export class Unit implements iUnit {
         if (options?.unitType) baseOptions.unitType = options.unitType;
         if (options?.multiplier) baseOptions.multiplier = options.multiplier;
         if (options?.name) baseOptions.name = options.name;
+        if (options?.aliases) baseOptions.aliases = options.aliases;
 
         return new Unit(baseOptions);
     }
