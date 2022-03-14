@@ -20,6 +20,7 @@ export const hour = new Unit({
     baseUnit: minute,
     multiplier: 60,
 });
+hour.aliases.push('hr');
 unitsList.add(hour);
 export const day = new Unit({
     base: new UnitBase({ abbr: 'd', name: 'day' }),
@@ -38,6 +39,7 @@ export const year = new Unit({
     baseUnit: day,
     multiplier: 365.25,
 });
+year.aliases.push('y');
 unitsList.add(year);
 export const meter = new Unit({
     base: new UnitBase({ abbr: 'm', name: 'meter' }),
@@ -105,6 +107,10 @@ baseUnits.forEach((baseUnit) => {
     });
 });
 unitsList.forEach((unit) => {
+    var _a;
     units[unit.name] = unit;
     units[unit.abbr] = unit;
+    (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => {
+        units[alias] = unit;
+    });
 });

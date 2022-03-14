@@ -7,6 +7,7 @@ interface iUnitOptionsA {
     multiplier?: number;
     unitType?: UnitType;
     name?: string;
+    aliases?: string[];
 }
 interface iUnitOptionsB {
     baseUnit: iUnit;
@@ -15,6 +16,7 @@ interface iUnitOptionsB {
     multiplier?: number;
     unitType?: UnitType;
     name?: string;
+    aliases?: string[];
 }
 export declare type iUnitOptions = iUnitOptionsA | iUnitOptionsB;
 /**
@@ -30,6 +32,7 @@ export interface iUnit extends iUnitBase {
     unitType: UnitType;
     /** The name of the unit: meter, kilogram, etc. */
     name: string;
+    aliases: string[];
     /**
      * The ratio of this unit in relation to the base unit. A kilogram would
      * have a multiplier of 1000, because gram is the base unit.
@@ -51,6 +54,7 @@ export declare class Unit implements iUnit {
     base: iUnitBase;
     prefix?: iUnitBase;
     baseMultiplier: number;
+    aliases: string[];
     /** The type of quantity measured by this unit: mass, time, length, etc. */
     unitType: UnitType;
     /**

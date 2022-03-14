@@ -17,9 +17,12 @@ class CompoundUnit {
     constructor(options) {
         this.subUnits = [];
         this.isInverse = false;
+        this.aliases = [];
         this.subUnits = options.units || [];
         this.__name = options.name;
         this.__abbr = options.abbr;
+        if (options.aliases)
+            this.aliases = options.aliases;
     }
     /** The compound quantity measured by this unit. */
     get unitType() { return UnitType_1.default.Compound; }
@@ -79,11 +82,14 @@ class CompoundUnit {
         let baseOptions = {
             units: this.subUnits,
             name: this.__name,
+            aliases: this.aliases,
         };
         if (options === null || options === void 0 ? void 0 : options.units)
             baseOptions.units = options.units;
         if (options === null || options === void 0 ? void 0 : options.name)
             baseOptions.name = options.name;
+        if (options === null || options === void 0 ? void 0 : options.aliases)
+            baseOptions.aliases = options.aliases;
         return new CompoundUnit(baseOptions);
     }
     toString(useAbbreviation = true) {

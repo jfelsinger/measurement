@@ -23,6 +23,7 @@ exports.hour = new Unit_1.Unit({
     baseUnit: exports.minute,
     multiplier: 60,
 });
+exports.hour.aliases.push('hr');
 exports.unitsList.add(exports.hour);
 exports.day = new Unit_1.Unit({
     base: new UnitBase_1.UnitBase({ abbr: 'd', name: 'day' }),
@@ -41,6 +42,7 @@ exports.year = new Unit_1.Unit({
     baseUnit: exports.day,
     multiplier: 365.25,
 });
+exports.year.aliases.push('y');
 exports.unitsList.add(exports.year);
 exports.meter = new Unit_1.Unit({
     base: new UnitBase_1.UnitBase({ abbr: 'm', name: 'meter' }),
@@ -108,6 +110,10 @@ baseUnits.forEach((baseUnit) => {
     });
 });
 exports.unitsList.forEach((unit) => {
+    var _a;
     exports.units[unit.name] = unit;
     exports.units[unit.abbr] = unit;
+    (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => {
+        exports.units[alias] = unit;
+    });
 });

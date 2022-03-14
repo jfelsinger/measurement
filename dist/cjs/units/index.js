@@ -32,8 +32,15 @@ exports.systems = {
 };
 [imperial, astronomical, metric].forEach((system) => {
     system.unitsList.forEach((unit) => {
+        var _a;
         exports.unitsList.add(unit);
         exports.units[unit.name] = unit;
         exports.units[unit.abbr] = unit;
+        (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => {
+            exports.units[alias] = unit;
+        });
+    });
+    Object.keys(system.units).forEach((key) => {
+        exports.units[key] = system.units[key];
     });
 });

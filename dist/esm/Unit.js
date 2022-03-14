@@ -7,7 +7,10 @@ import { multiply } from './lib/safeMath';
 export class Unit {
     constructor(options) {
         var _a, _b;
+        this.aliases = [];
         this.base = UnitBase.get(options.base || ((_a = options.baseUnit) === null || _a === void 0 ? void 0 : _a.base));
+        if (options.aliases)
+            this.aliases = options.aliases;
         this.baseUnit = options.baseUnit;
         this.unitType =
             options.unitType ||
@@ -57,6 +60,7 @@ export class Unit {
             unitType: this.unitType,
             multiplier: this.baseMultiplier,
             name: this.__name,
+            aliases: this.aliases.slice(),
         };
         if (options === null || options === void 0 ? void 0 : options.base)
             baseOptions.base = new UnitBase(options.base);
@@ -70,6 +74,8 @@ export class Unit {
             baseOptions.multiplier = options.multiplier;
         if (options === null || options === void 0 ? void 0 : options.name)
             baseOptions.name = options.name;
+        if (options === null || options === void 0 ? void 0 : options.aliases)
+            baseOptions.aliases = options.aliases;
         return new Unit(baseOptions);
     }
 }

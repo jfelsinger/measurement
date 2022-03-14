@@ -67,4 +67,15 @@ describe('Scalar', () => {
         (0, chai_1.expect)(oneMp2h.as(mph).value).to.equal(0.5);
         (0, chai_1.expect)(oneMp2h.as(mph).as(mp2h).value).to.equal(1);
     });
+    describe('per', () => {
+        it('should create a new compound scalar', () => {
+            let { feet, second } = UnitLibrary_1.default.units;
+            let distance = new Scalar_1.Scalar({ value: 1, unit: feet });
+            let fps = distance.per(second);
+            (0, chai_1.expect)(fps.unit.unitType).to.equal(UnitType_1.UnitType.Compound);
+            let fps2 = fps.clone();
+            let fpm = distance.per.minute();
+            (0, chai_1.expect)(fps.unit.unitType).to.equal(UnitType_1.UnitType.Compound);
+        });
+    });
 });

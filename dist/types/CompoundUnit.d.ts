@@ -17,6 +17,7 @@ export interface iCompoundUnitOptions {
     /** The name of the compound unit */
     name?: string;
     abbr?: string;
+    aliases?: string[];
 }
 /**
  * A unit that is a combination of two or more others. ex:
@@ -28,6 +29,7 @@ export declare class CompoundUnit implements iCompoundUnit {
     subUnits: iUnit[];
     protected __name?: string;
     isInverse: boolean;
+    aliases: string[];
     /** The compound quantity measured by this unit. */
     get unitType(): UnitType;
     /**

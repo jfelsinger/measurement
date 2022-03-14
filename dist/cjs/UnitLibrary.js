@@ -39,9 +39,11 @@ class UnitLibrary {
         }
     }
     addUnit(unit) {
+        var _a;
         this.unitsList.add(unit);
         this.units[unit.name] = unit;
         this.units[unit.abbr] = unit;
+        (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => this.units[alias] = unit);
         return this;
     }
     deleteUnit(unit) {

@@ -10,8 +10,15 @@ export const systems = {
 };
 [imperial, astronomical, metric].forEach((system) => {
     system.unitsList.forEach((unit) => {
+        var _a;
         unitsList.add(unit);
         units[unit.name] = unit;
         units[unit.abbr] = unit;
+        (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => {
+            units[alias] = unit;
+        });
+    });
+    Object.keys(system.units).forEach((key) => {
+        units[key] = system.units[key];
     });
 });

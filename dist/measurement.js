@@ -88,7 +88,10 @@
     class Unit {
         constructor(options) {
             var _a, _b;
+            this.aliases = [];
             this.base = UnitBase.get(options.base || ((_a = options.baseUnit) === null || _a === void 0 ? void 0 : _a.base));
+            if (options.aliases)
+                this.aliases = options.aliases;
             this.baseUnit = options.baseUnit;
             this.unitType =
                 options.unitType ||
@@ -138,19 +141,22 @@
                 unitType: this.unitType,
                 multiplier: this.baseMultiplier,
                 name: this.__name,
+                aliases: this.aliases.slice(),
             };
             if (options === null || options === void 0 ? void 0 : options.base)
-                baseOptions.base = options.base;
+                baseOptions.base = new UnitBase(options.base);
             if (options === null || options === void 0 ? void 0 : options.baseUnit)
                 baseOptions.baseUnit = options.baseUnit;
             if (options === null || options === void 0 ? void 0 : options.prefix)
-                baseOptions.prefix = options.prefix;
+                baseOptions.prefix = new UnitBase(options.prefix);
             if (options === null || options === void 0 ? void 0 : options.unitType)
                 baseOptions.unitType = options.unitType;
             if (options === null || options === void 0 ? void 0 : options.multiplier)
                 baseOptions.multiplier = options.multiplier;
             if (options === null || options === void 0 ? void 0 : options.name)
                 baseOptions.name = options.name;
+            if (options === null || options === void 0 ? void 0 : options.aliases)
+                baseOptions.aliases = options.aliases;
             return new Unit(baseOptions);
         }
     }
@@ -187,9 +193,12 @@
         constructor(options) {
             this.subUnits = [];
             this.isInverse = false;
+            this.aliases = [];
             this.subUnits = options.units || [];
             this.__name = options.name;
             this.__abbr = options.abbr;
+            if (options.aliases)
+                this.aliases = options.aliases;
         }
         /** The compound quantity measured by this unit. */
         get unitType() { return UnitType$1.Compound; }
@@ -249,11 +258,14 @@
             let baseOptions = {
                 units: this.subUnits,
                 name: this.__name,
+                aliases: this.aliases,
             };
             if (options === null || options === void 0 ? void 0 : options.units)
                 baseOptions.units = options.units;
             if (options === null || options === void 0 ? void 0 : options.name)
                 baseOptions.name = options.name;
+            if (options === null || options === void 0 ? void 0 : options.aliases)
+                baseOptions.aliases = options.aliases;
             return new CompoundUnit(baseOptions);
         }
         toString(useAbbreviation = true) {
@@ -283,6 +295,7 @@
         baseUnit: minute,
         multiplier: 60,
     });
+    hour.aliases.push('hr');
     unitsList$3.add(hour);
     const day = new Unit({
         base: new UnitBase({ abbr: 'd', name: 'day' }),
@@ -301,6 +314,7 @@
         baseUnit: day,
         multiplier: 365.25,
     });
+    year.aliases.push('y');
     unitsList$3.add(year);
     const meter = new Unit({
         base: new UnitBase({ abbr: 'm', name: 'meter' }),
@@ -368,8 +382,12 @@
         });
     });
     unitsList$3.forEach((unit) => {
+        var _a;
         units$3[unit.name] = unit;
         units$3[unit.abbr] = unit;
+        (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => {
+            units$3[alias] = unit;
+        });
     });
 
     var metric = /*#__PURE__*/Object.freeze({
@@ -422,35 +440,31 @@
     });
 
     const bases = [
-        { base: new UnitBase({ abbr: 'in', name: 'inch' }), metricBase: meter, multiplier: 0.0254 },
-        { base: new UnitBase({ abbr: 'h', name: 'hand' }), metricBase: meter, multiplier: 0.1016 },
-        { base: new UnitBase({ abbr: 'ft', name: 'foot' }), metricBase: meter, multiplier: 0.3048 },
-        { base: new UnitBase({ abbr: 'yd', name: 'yard' }), metricBase: meter, multiplier: 0.9144 },
-        { base: new UnitBase({ abbr: 'ch', name: 'chain' }), metricBase: meter, multiplier: 20.1168 },
-        { base: new UnitBase({ abbr: 'fur', name: 'furlong' }), metricBase: meter, multiplier: 201.168 },
-        { base: new UnitBase({ abbr: 'mi', name: 'mile' }), metricBase: meter, multiplier: 1609.344 },
-        { base: new UnitBase({ abbr: 'lea', name: 'league' }), metricBase: meter, multiplier: 4828.032 },
-        { base: new UnitBase({ abbr: 'fl oz', name: 'fluid ounce' }), metricBase: units$3.ml, multiplier: 28.4130625 },
-        { base: new UnitBase({ abbr: 'gi', name: 'gill' }), metricBase: units$3.ml, multiplier: 142.0653125 },
-        { base: new UnitBase({ abbr: 'pt', name: 'pint' }), metricBase: units$3.ml, multiplier: 568.26125 },
-        { base: new UnitBase({ abbr: 'qt', name: 'quart' }), metricBase: units$3.ml, multiplier: 1136.5225 },
-        { base: new UnitBase({ abbr: 'gal', name: 'gallon' }), metricBase: units$3.ml, multiplier: 4546.09 },
-        { base: new UnitBase({ abbr: 'cp', name: 'cup' }), metricBase: units$3.ml, multiplier: 240 },
-        { base: new UnitBase({ abbr: 'Tbsp', name: 'tablespoon' }), metricBase: units$3.ml, multiplier: 15 },
-        { base: new UnitBase({ abbr: 'tsp', name: 'teaspoon' }), metricBase: units$3.ml, multiplier: 5 },
-        { base: new UnitBase({ abbr: 'oz', name: 'ounce' }), metricBase: gram, multiplier: 28.349523125 },
-        { base: new UnitBase({ abbr: 'lb', name: 'pound' }), metricBase: gram, multiplier: 453.59237 },
-        { base: new UnitBase({ abbr: 'st', name: 'stone' }), metricBase: gram, multiplier: 6350.29318 },
-        { base: new UnitBase({ abbr: 't', name: 'ton' }), metricBase: units$3.kg, multiplier: 1016.0469088 },
+        { base: new UnitBase({ abbr: 'in', name: 'inch' }), baseUnit: meter, multiplier: 0.0254 },
+        { base: new UnitBase({ abbr: 'h', name: 'hand' }), baseUnit: meter, multiplier: 0.1016 },
+        { base: new UnitBase({ abbr: 'ft', name: 'foot' }), aliases: ['feet'], baseUnit: meter, multiplier: 0.3048 },
+        { base: new UnitBase({ abbr: 'yd', name: 'yard' }), baseUnit: meter, multiplier: 0.9144 },
+        { base: new UnitBase({ abbr: 'ch', name: 'chain' }), baseUnit: meter, multiplier: 20.1168 },
+        { base: new UnitBase({ abbr: 'fur', name: 'furlong' }), baseUnit: meter, multiplier: 201.168 },
+        { base: new UnitBase({ abbr: 'mi', name: 'mile' }), baseUnit: meter, multiplier: 1609.344 },
+        { base: new UnitBase({ abbr: 'lea', name: 'league' }), baseUnit: meter, multiplier: 4828.032 },
+        { base: new UnitBase({ abbr: 'fl oz', name: 'fluid ounce' }), baseUnit: units$3.ml, multiplier: 28.4130625 },
+        { base: new UnitBase({ abbr: 'gi', name: 'gill' }), baseUnit: units$3.ml, multiplier: 142.0653125 },
+        { base: new UnitBase({ abbr: 'pt', name: 'pint' }), baseUnit: units$3.ml, multiplier: 568.26125 },
+        { base: new UnitBase({ abbr: 'qt', name: 'quart' }), baseUnit: units$3.ml, multiplier: 1136.5225 },
+        { base: new UnitBase({ abbr: 'gal', name: 'gallon' }), baseUnit: units$3.ml, multiplier: 4546.09 },
+        { base: new UnitBase({ abbr: 'cp', name: 'cup' }), baseUnit: units$3.ml, multiplier: 240 },
+        { base: new UnitBase({ abbr: 'Tbsp', name: 'tablespoon' }), baseUnit: units$3.ml, multiplier: 15 },
+        { base: new UnitBase({ abbr: 'tsp', name: 'teaspoon' }), baseUnit: units$3.ml, multiplier: 5 },
+        { base: new UnitBase({ abbr: 'oz', name: 'ounce' }), baseUnit: gram, multiplier: 28.349523125 },
+        { base: new UnitBase({ abbr: 'lb', name: 'pound' }), baseUnit: gram, multiplier: 453.59237 },
+        { base: new UnitBase({ abbr: 'st', name: 'stone' }), baseUnit: gram, multiplier: 6350.29318 },
+        { base: new UnitBase({ abbr: 't', name: 'ton' }), baseUnit: units$3.kg, multiplier: 1016.0469088 },
     ];
     const unitsList$1 = new Set();
     const units$1 = {};
     bases.forEach((unitBase) => {
-        const unit = new Unit({
-            base: unitBase.base,
-            baseUnit: unitBase.metricBase,
-            multiplier: unitBase.multiplier,
-        });
+        const unit = new Unit(unitBase);
         unitsList$1.add(unit);
         units$1[unit.name] = unit;
         units$1[unit.abbr] = unit;
@@ -475,9 +489,16 @@
     const units = {};
     [imperial, astronomical, metric].forEach((system) => {
         system.unitsList.forEach((unit) => {
+            var _a;
             unitsList.add(unit);
             units[unit.name] = unit;
             units[unit.abbr] = unit;
+            (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => {
+                units[alias] = unit;
+            });
+        });
+        Object.keys(system.units).forEach((key) => {
+            units[key] = system.units[key];
         });
     });
 
@@ -517,9 +538,11 @@
             }
         }
         addUnit(unit) {
+            var _a;
             this.unitsList.add(unit);
             this.units[unit.name] = unit;
             this.units[unit.abbr] = unit;
+            (_a = unit.aliases) === null || _a === void 0 ? void 0 : _a.forEach((alias) => this.units[alias] = unit);
             return this;
         }
         deleteUnit(unit) {
@@ -540,8 +563,20 @@
                 this.unit = library.getUnit(options.unit);
             else
                 this.unit = options.unit;
-            this.value = options.value;
+            this.__value = options.value;
+            const as = this.as = this.convertAs.bind(this);
+            this.to = this.convertTo.bind(this);
+            const per = this.per = this.convertPer.bind(this);
+            this.library.unitsList.forEach((unit) => {
+                this.as[unit.name] = (index) => as(unit, index);
+                // this.as[unit.abbr] = (index?: number) => this.as(unit, index);
+                this.to[unit.name] = (index) => this.to(unit, index);
+                // this.to[unit.abbr] = (index?: number) => this.to(unit, index);
+                this.per[unit.name] = () => per(unit);
+                // this.per[unit.abbr] = () => this.per(unit);
+            });
         }
+        get value() { return this.getValue(); }
         static get(value, unit, library) {
             return new Scalar({
                 value,
@@ -558,39 +593,27 @@
          */
         getValue(unitArg, index = 0) {
             if (!unitArg)
-                return this.value;
+                return this.__value;
             // else:
             const currentUnit = this.unit;
             let unit = this.getConvertedUnit(unitArg, index);
-            return multiply(this.value, divide(currentUnit.multiplier, unit.multiplier));
+            return multiply(this.__value, divide(currentUnit.multiplier, unit.multiplier));
         }
-        /**
-         * Returns an equivalent scalar based on a different unit
-         */
-        as(unitArg, index = 0) {
-            this.unit;
+        convertAs(unitArg, index = 0) {
             let unit = this.getConvertedUnit(unitArg, index);
             let value = this.getValue(unitArg, index);
             return this.clone({ unit, value });
         }
-        /**
-         * Converts the current instance of scalar to another unit of measure
-         */
-        to(unitArg, index = 0) {
+        convertTo(unitArg, index = 0) {
             let converted = this.as(unitArg, index);
-            this.value = converted.value;
+            this.__value = converted.value;
             this.unit = converted.unit;
             return this;
         }
-        /**
-         * Make a compound unit representing the current unit per the given one.
-         *
-         * km.per(hr); // km/hr
-         * someAmountOfKm.per(hr); // km/hr
-         */
-        per(unitArg) {
+        convertPer(unitArg) {
             let resultUnit;
             let currentUnit = this.unit.clone();
+            this.unit;
             let unit = this.getUnitFromLibrary(unitArg);
             if (currentUnit.unitType === UnitType$1.Compound) {
                 resultUnit = currentUnit;
@@ -600,7 +623,7 @@
             }
             resultUnit.addUnit(unit);
             return this.clone({
-                value: this.value,
+                value: this.__value,
                 unit: resultUnit,
             });
         }
@@ -616,9 +639,9 @@
             }
             if (!unit.matchesType(currentUnit))
                 throw new Error('Invalid Units: a unit of type `' +
-                    this.unit +
+                    this.unit.toString(false) +
                     '` cannot be converted to a unit of type `' +
-                    unit + '`');
+                    unit.toString(false) + '`');
             return unit;
         }
         /**
@@ -636,7 +659,7 @@
         clone(options) {
             var _a, _b, _c;
             return new Scalar({
-                value: (_a = options === null || options === void 0 ? void 0 : options.value) !== null && _a !== void 0 ? _a : this.value,
+                value: (_a = options === null || options === void 0 ? void 0 : options.value) !== null && _a !== void 0 ? _a : this.__value,
                 unit: (_b = options === null || options === void 0 ? void 0 : options.unit) !== null && _b !== void 0 ? _b : this.unit.clone(),
                 library: (_c = options === null || options === void 0 ? void 0 : options.library) !== null && _c !== void 0 ? _c : this.library,
             });
@@ -650,13 +673,76 @@
         toString(useAbbreviation = true, tryToPluralize = true) {
             if (useAbbreviation)
                 return `${this.value}${this.unit.toString(useAbbreviation)}`;
-            if (tryToPluralize && this.value != 1)
+            if (tryToPluralize && this.__value != 1)
                 return `${this.value} ${this.unit.toString(useAbbreviation)}s`;
             return `${this.value} ${this.unit.toString(useAbbreviation)}`;
         }
     }
 
-    var measurement = /*#__PURE__*/Object.freeze({
+    const measurementRegex = /^(?<value>[0-9.]*)(?<unit>.*)$/ig;
+    class Measurement {
+        constructor(library = defaultLibrary) {
+            this.library = defaultLibrary;
+            this.units = {};
+            if (library)
+                this.library = library;
+            library.unitsList.forEach((unit) => this.addUnit(unit));
+        }
+        get unit() { return this.units; }
+        measurement(...args) { return this.measure(...args); }
+        measure(...args) {
+            if (args.length === 1) {
+                return this.parseUnit(args[0]);
+            }
+            return new Scalar({ value: args[0], unit: args[1] });
+        }
+        parseUnit(unitString) {
+            var _a, _b;
+            let results = measurementRegex.exec(unitString);
+            let resultUnit = null;
+            let resultValue = null;
+            if (results === null || results === void 0 ? void 0 : results.groups) {
+                if (((_a = results === null || results === void 0 ? void 0 : results.groups) === null || _a === void 0 ? void 0 : _a.unit) && this.library.hasKey(results.groups.unit)) {
+                    resultUnit = this.library.getUnit(results.groups.unit);
+                }
+                if ((_b = results === null || results === void 0 ? void 0 : results.groups) === null || _b === void 0 ? void 0 : _b.value) {
+                    resultValue = parseFloat(results.groups.value);
+                }
+            }
+            if (resultUnit !== null && resultValue !== null) {
+                return new Scalar({ value: resultValue, unit: resultUnit });
+            }
+        }
+        makeScalar(unit) {
+            return (value) => new Scalar({ unit, value });
+        }
+        addUnit(unit) {
+            this.library.addUnit(unit);
+            let self = this;
+            if (!self[unit.name])
+                self[unit.name] = this.makeScalar(unit);
+            if (!self[unit.abbr])
+                self[unit.abbr] = this.makeScalar(unit);
+            this.units[unit.name] = unit;
+            this.units[unit.abbr] = unit;
+            return this;
+        }
+        deleteUnit(unit) {
+            var _a, _b;
+            this.library.deleteUnit(unit);
+            let self = this;
+            if (((_a = self[unit.name]) === null || _a === void 0 ? void 0 : _a.name) === unit.name)
+                delete self[unit.name];
+            if (((_b = self[unit.abbr]) === null || _b === void 0 ? void 0 : _b.name) === unit.name)
+                delete self[unit.abbr];
+            delete this.units[unit.name];
+            delete this.units[unit.abbr];
+            return this;
+        }
+    }
+    const measurement = new Measurement();
+
+    var bundle = /*#__PURE__*/Object.freeze({
         __proto__: null,
         library: defaultLibrary,
         UnitLibrary: UnitLibrary,
@@ -664,9 +750,19 @@
         UnitBase: UnitBase,
         Unit: Unit,
         CompoundUnit: CompoundUnit,
-        Scalar: Scalar
+        Scalar: Scalar,
+        Measurement: Measurement,
+        measurement: measurement
     });
 
     window.measurement = measurement;
+    Object.keys(bundle).forEach((key) => {
+        window.measurement[key] = bundle[key];
+    });
+    // measurement.library.unitsList.forEach((unit) => {
+    //     let m = (<any>measurement);
+    //     if (!m[unit.name]) m[unit.name] = unit;
+    //     if (!m[unit.abbr]) m[unit.abbr] = unit;
+    // });
 
 })();
