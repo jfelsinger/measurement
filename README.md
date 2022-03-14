@@ -13,13 +13,13 @@ TypeScript.
 
 ## Installation
 
-```
+```js
 npm install measurement
 ```
 
 or include it on your page.
 
-```
+```html
 <script src="dist/measurement.min.js" type="text/javascript"></script>
 ```
 
@@ -30,7 +30,7 @@ To start initialize a new instance of the measurement factory.
 
 *TypeScript*
 
-```
+```ts
 import { measurement } from 'measurement';
 
 // Get a new measurement
@@ -65,7 +65,7 @@ let valueInMeters = myMeasurement.getValue(measurement.units.m); // => 2500
 
 *JavaScript*
 
-```
+```js
 let m = require('measurement').measurement;
 
 // Get a new measurement
@@ -109,7 +109,7 @@ let valueInMeters = measurement.getValue(m.units.m); // => 2500
 Measurements can be converted from one unit to another by calling
 a unit method or by using the generic ``to()`` and ``as()`` methods.
 
-```
+```js
 measurement = mf.km(8);
 
 // convert to miles using the unit method
@@ -134,7 +134,7 @@ Compound units can be built up from the base units of ``TIME``, ``LENGTH``,
 ``VOLUME``, ``MEMORY``,  and ``MASS`` to represent values such as speed or
 transfer rate.
 
-```
+```js
 let distance = mf.km(25);
 
 // The per() method adds another unit to the current, compounding it
@@ -154,7 +154,7 @@ units bunched together. The unit methods act on separate pieces of compound unit
 while the ``to()`` and ``as()`` methods act differently whether another compound
 unit or a base unit is supplied.
 
-```
+```js
 let speed = mf.km(25).per('hr'); // => 25km/h
 
 // Using the unit method to convert to mi/h
@@ -176,7 +176,7 @@ Units are available on the `.units` property, the top-level has helper functions
 for getting a scalar measurement for a given unit. Properties and keys are
 created by default for most common units.
 
-```
+```ts
 import { measurement } from 'measurement';
 
 // Create a measurement...
