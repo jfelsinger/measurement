@@ -65,11 +65,20 @@ export class Measurement {
 
     makeScalar(unit: iUnit|string) {
         let library = this.library;
-        return (value: number) => new Scalar({
+        let result = (value: number) => new Scalar({
             unit,
             value,
             library,
         });
+
+        // We do this to make sure we don't shoot ourselves in the foot when
+        // the `deleteUnit` function is called.
+        if (typeof(unit) === 'string')
+            (<any>result).unitName = unit;
+        else
+            (<any>result).unitName = unit.name;
+
+        return result;
     }
 
     constructor(library: iUnitLibrary = defaultLibrary) {
@@ -96,9 +105,10 @@ export class Measurement {
     deleteUnit(unit: iUnit) {
         this.library.deleteUnit(unit);
 
+        // We want to be extra careful about deleting stuff off the top level
         let self = (<any>this);
-        if (self[unit.name]?.name === unit.name) delete self[unit.name];
-        if (self[unit.abbr]?.name === unit.name) delete self[unit.abbr];
+        if (self[unit.name]?.unitName === unit.name) delete self[unit.name];
+        if (self[unit.abbr]?.unitName === unit.name) delete self[unit.abbr];
 
         delete this.units[unit.name];
         delete this.units[unit.abbr];
