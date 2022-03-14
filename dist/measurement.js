@@ -736,11 +736,18 @@
         }
         makeScalar(unit) {
             let library = this.library;
-            return (value) => new Scalar({
+            let result = (value) => new Scalar({
                 unit,
                 value,
                 library,
             });
+            // We do this to make sure we don't shoot ourselves in the foot when
+            // the `deleteUnit` function is called.
+            if (typeof (unit) === 'string')
+                result.unitName = unit;
+            else
+                result.unitName = unit.name;
+            return result;
         }
         registerLibrary(library) {
             this.library = library;
@@ -760,10 +767,11 @@
         deleteUnit(unit) {
             var _a, _b;
             this.library.deleteUnit(unit);
+            // We want to be extra careful about deleting stuff off the top level
             let self = this;
-            if (((_a = self[unit.name]) === null || _a === void 0 ? void 0 : _a.name) === unit.name)
+            if (((_a = self[unit.name]) === null || _a === void 0 ? void 0 : _a.unitName) === unit.name)
                 delete self[unit.name];
-            if (((_b = self[unit.abbr]) === null || _b === void 0 ? void 0 : _b.name) === unit.name)
+            if (((_b = self[unit.abbr]) === null || _b === void 0 ? void 0 : _b.unitName) === unit.name)
                 delete self[unit.abbr];
             delete this.units[unit.name];
             delete this.units[unit.abbr];
@@ -778,6 +786,7 @@
     var bundle = /*#__PURE__*/Object.freeze({
         __proto__: null,
         library: defaultLibrary,
+        'default': measurement,
         UnitLibrary: UnitLibrary,
         get UnitType () { return UnitType; },
         UnitBase: UnitBase,

@@ -48,6 +48,11 @@ describe('Measurement', () => {
             let km = fiveMi.to(m.units.km);
             expect(km.getValue()).to.equal(8.04672);
         });
+        it('should throw when a null unit is given', () => {
+            expect(() => {
+                measurement.measurement(5, measurement.units.mirlle);
+            }).to.throw();
+        });
     });
     describe('parseUnit', () => {
     });

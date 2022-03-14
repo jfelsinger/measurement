@@ -3,6 +3,14 @@ Measurement [![Build Status](https://secure.travis-ci.org/jfelsinger/measurement
 
 A flexible library for handling unit conversions
 
+Measurements and conversions between most common units of measurements, as well
+as some uncommon ones, are supported right out of the box.
+
+This library should work in a NodeJs environment, in the browser, and also in
+TypeScript.
+
+
+
 ## Installation
 
 ```
@@ -19,34 +27,80 @@ or include it on your page.
 
 To start initialize a new instance of the measurement factory.
 
+
+*TypeScript*
+
 ```
-var measurement = require('measurement');
-var mf = new measurement.Factory();
+import { measurement } from 'measurement';
 
 // Get a new measurement
-var measurement = mf.km(25);
+let myMeasurement = measurement.km(25);
 
 // from a string
-measurement = mf.measure('25km');
-
-// or
-measurement = mf.measurement('25km');
+myMeasurement = measurement.measure('25km');
 
 
 // as a combination of a scalar value and a unit
-measurement = mf.measure(25, 'km');
-measurement = mf.measure(25, mf.units.km);
+myMeasurement = measurement.measure(25, 'km');
+myMeasurement = measurement.measure(25, measurement.units.km);
+
+
+
+// Get the raw value that represent the measurement
+let value = myMeasurement.getValue(); // => 25
 
 // or
-measurement = mf.measurement(25, 'km');
-measurement = mf.measurement(25, mf.units.km);
+let value = myMeasurement.value; // => 25
+
+
+
+// Get the value in terms of another base unit
+// a.k.a. convert the number to another unit
+let valueInMeters = myMeasurement.getValue('m');  // => 2500
+
+// or
+let valueInMeters = myMeasurement.getValue(measurement.units.m); // => 2500
+
+```
+
+*JavaScript*
+
+```
+let m = require('measurement').measurement;
+
+// Get a new measurement
+let measurement = m.km(25);
+
+// from a string
+measurement = m.measure('25km');
+
+// or
+measurement = m.measurement('25km');
+
+
+// as a combination of a scalar value and a unit
+measurement = m.measure(25, 'km');
+measurement = m.measure(25, m.units.km);
+
+// or
+measurement = m.measurement(25, 'km');
+measurement = m.measurement(25, m.units.km);
+
 
 
 // Get the scalar value that represent the measurement
-var value = measurement.getValue();
+let value = measurement.getValue(); // => 25
 
-// Get the value in terms of another unit
-var valueInMeters = measurement.getValue('m');  // or .getValue(mf.units.m);
+// or
+let value = measurement.value; // => 25
+
+
+
+// Get the value in terms of another base unit
+let valueInMeters = measurement.getValue('m');  // => 2500
+
+// or
+let valueInMeters = measurement.getValue(m.units.m); // => 2500
 
 ```
 
@@ -59,13 +113,17 @@ a unit method or by using the generic ``to()`` and ``as()`` methods.
 measurement = mf.km(8);
 
 // convert to miles using the unit method
-var miles = measurement.mi();
+let miles = measurement.mi();
 
-// using the as() method returns a copy with the converted unit
-var miles = measurement.as('mi');
-var miles = measurement.as(mf.units.mi);
+// equivalent to using the as() method,
+// which returns a copy with the converted unit
+let miles = measurement.as('mi');
+let miles = measurement.as(mf.units.mi);
 
-// using to() converts the object itself to the given unit
+
+
+
+// using to() converts the initial object itself to the given unit
 measurement.to('mi');
 measurement.to(mf.units.mi);
 ```
@@ -77,16 +135,16 @@ Compound units can be built up from the base units of ``TIME``, ``LENGTH``,
 transfer rate.
 
 ```
-var distance = mf.km(25);
+let distance = mf.km(25);
 
 // The per() method adds another unit to the current, compounding it
 
-var speed = distance.per('hr');  // or per(mf.units.hr)
+let speed = distance.per('hr');  // or per(mf.units.hr)
 
 // There isn't a hard limit to the amount of units you can compound on
 
 // 25km/hr/s, acceleration at a pace of 25km/hr every second
-var acceleration = speed.per('s'); // mf.km(25).per('hr').per('s')
+let acceleration = speed.per('s'); // mf.km(25).per('hr').per('s')
 ```
 
 ## Converting Compound Units
@@ -97,16 +155,37 @@ while the ``to()`` and ``as()`` methods act differently whether another compound
 unit or a base unit is supplied.
 
 ```
-var speed = mf.km(25).per('hr'); // => 25km/h
+let speed = mf.km(25).per('hr'); // => 25km/h
 
 // Using the unit method to convert to mi/h
-var mph = speed.mi();
+let mph = speed.mi();
 
 // Unit methods default to changing the first unit in the list,
 // but they can also be supplied a zero-based index
-var metersPerSecond = speed.m().s(1);  // => 6.9444m/s
+let metersPerSecond = speed.m().s(1);  // => 6.9444m/s
 
 // All of the functions that deal with units can take an index parameter to
 // deal with the individual parts of compound units
-var valueInKilometersPerSecond = speed.getValue('s', 1);
+let valueInKilometersPerSecond = speed.getValue('s', 1);
+```
+
+
+## Accessing Units and Measurements
+
+Units are available on the `.units` property, the top-level has helper functions
+for getting a scalar measurement for a given unit. Properties and keys are
+created by default for most common units.
+
+```
+import { measurement } from 'measurement';
+
+// Create a measurement...
+let foo = measurement.km(10);
+let foo = measurement.kilometer(10);
+let foo = measurement.meter(10); // etc...
+
+// Get an instance of a unit...
+let unit = measurement.units.km;
+let unit = measurement.units.kilometer;
+let unit = measurement.units.meter; // etc...
 ```

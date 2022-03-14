@@ -53,6 +53,11 @@ describe('Measurement', () => {
             let km = fiveMi.to(m.units.km);
             (0, chai_1.expect)(km.getValue()).to.equal(8.04672);
         });
+        it('should throw when a null unit is given', () => {
+            (0, chai_1.expect)(() => {
+                Measurement_1.measurement.measurement(5, Measurement_1.measurement.units.mirlle);
+            }).to.throw();
+        });
     });
     describe('parseUnit', () => {
     });
