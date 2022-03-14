@@ -1,16 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.measurement = exports.Measurement = void 0;
+exports.measurement = exports.MeasurementFactory = exports.Measurement = exports.measurementRegex = void 0;
 const UnitLibrary_1 = require("./UnitLibrary");
 const Scalar_1 = require("./Scalar");
-const measurementRegex = /^(?<value>[0-9.]*)(?<unit>.*)$/ig;
+/**
+ *  (?<value>[-+]?[0-9.]*)
+ *  Gets the value, allowing decimals, plus, and minus
+ *
+ *  \s*
+ *  Allows any amount of white-space (or not) between the value and unit
+ *
+ *  (?<unit>.*)
+ *  Capture the value of the unit
+ */
+exports.measurementRegex = /^(?<value>[-+]?[0-9.]*)\s*(?<unit>.*)$/ig;
 class Measurement {
     constructor(library = UnitLibrary_1.defaultLibrary) {
         this.library = UnitLibrary_1.defaultLibrary;
         this.units = {};
         if (library)
-            this.library = library;
-        library.unitsList.forEach((unit) => this.addUnit(unit));
+            this.registerLibrary(library);
     }
     get unit() { return this.units; }
     measurement(...args) { return this.measure(...args); }
@@ -18,11 +27,17 @@ class Measurement {
         if (args.length === 1) {
             return this.parseUnit(args[0]);
         }
-        return new Scalar_1.Scalar({ value: args[0], unit: args[1] });
+        let value = args[0];
+        let unit = args[1];
+        if (!unit) {
+            throw new Error('The unit argument provided is null or invalid');
+        }
+        return this.makeScalar(args[1])(args[0]);
     }
     parseUnit(unitString) {
         var _a, _b;
-        let results = measurementRegex.exec(unitString);
+        unitString = unitString.trim();
+        let results = exports.measurementRegex.exec(unitString);
         let resultUnit = null;
         let resultValue = null;
         if (results === null || results === void 0 ? void 0 : results.groups) {
@@ -33,12 +48,24 @@ class Measurement {
                 resultValue = parseFloat(results.groups.value);
             }
         }
-        if (resultUnit !== null && resultValue !== null) {
-            return new Scalar_1.Scalar({ value: resultValue, unit: resultUnit });
+        if (resultUnit === null || !resultValue) {
+            throw new Error('Unable to parse the given unit string: `' +
+                unitString +
+                '`');
         }
+        return this.makeScalar(resultUnit)(resultValue);
     }
     makeScalar(unit) {
-        return (value) => new Scalar_1.Scalar({ unit, value });
+        let library = this.library;
+        return (value) => new Scalar_1.Scalar({
+            unit,
+            value,
+            library,
+        });
+    }
+    registerLibrary(library) {
+        this.library = library;
+        library.unitsList.forEach((unit) => this.addUnit(unit));
     }
     addUnit(unit) {
         this.library.addUnit(unit);
@@ -65,5 +92,9 @@ class Measurement {
     }
 }
 exports.Measurement = Measurement;
+function MeasurementFactory(library = UnitLibrary_1.defaultLibrary) {
+    return new Measurement(library);
+}
+exports.MeasurementFactory = MeasurementFactory;
 exports.measurement = new Measurement();
 exports.default = exports.measurement;

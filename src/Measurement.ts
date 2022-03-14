@@ -2,7 +2,17 @@ import { defaultLibrary, iUnitLibrary } from './UnitLibrary';
 import { iUnit } from './Unit';
 import { Scalar } from './Scalar';
 
-const measurementRegex = /^(?<value>[0-9.]*)(?<unit>.*)$/ig;
+/**
+ *  (?<value>[-+]?[0-9.]*)
+ *  Gets the value, allowing decimals, plus, and minus
+ *
+ *  \s*
+ *  Allows any amount of white-space (or not) between the value and unit
+ *
+ *  (?<unit>.*)
+ *  Capture the value of the unit
+ */
+export const measurementRegex = /^(?<value>[-+]?[0-9.]*)\s*(?<unit>.*)$/ig;
 
 export class Measurement {
     library: iUnitLibrary = defaultLibrary;
@@ -16,10 +26,18 @@ export class Measurement {
             return this.parseUnit(args[0]);
         }
 
-        return new Scalar({ value: args[0], unit: args[1] });
+        let value = args[0];
+        let unit = args[1];
+
+        if (!unit) {
+            throw new Error('The unit argument provided is null or invalid');
+        }
+
+        return this.makeScalar(args[1])(args[0]);
     }
 
     parseUnit(unitString: string) {
+        unitString = unitString.trim();
         let results = measurementRegex.exec(unitString);
         let resultUnit: iUnit|null = null;
         let resultValue: number|null = null;
@@ -34,18 +52,32 @@ export class Measurement {
             }
         }
 
-        if (resultUnit !== null && resultValue !== null) {
-            return new Scalar({ value: resultValue, unit: resultUnit });
+        if (resultUnit === null || !resultValue) {
+            throw new Error(
+                'Unable to parse the given unit string: `' +
+                unitString +
+                '`'
+            )
         }
+
+        return this.makeScalar(resultUnit)(resultValue);
     }
 
     makeScalar(unit: iUnit|string) {
-        return (value: number) => new Scalar({ unit, value });
+        let library = this.library;
+        return (value: number) => new Scalar({
+            unit,
+            value,
+            library,
+        });
     }
 
     constructor(library: iUnitLibrary = defaultLibrary) {
-        if (library) this.library = library;
+        if (library) this.registerLibrary(library);
+    }
 
+    registerLibrary(library: iUnitLibrary) {
+        this.library = library;
         library.unitsList.forEach((unit) => this.addUnit(unit));
     }
 
@@ -74,5 +106,10 @@ export class Measurement {
     }
 }
 
-export const measurement = new Measurement();
+export type ScalarUnitHelper = { [key:string]: (value:number) => Scalar };
+export function MeasurementFactory(library: iUnitLibrary = defaultLibrary) {
+    return new Measurement(library) as Measurement & ScalarUnitHelper;
+}
+
+export const measurement = new Measurement() as Measurement & ScalarUnitHelper;
 export default measurement;

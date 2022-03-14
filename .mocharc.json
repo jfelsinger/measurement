@@ -1,6 +1,5 @@
 {
     "spec": [
-        "src/**/*.test.ts",
         "src/**/*.tests.ts"
     ],
     "recursive": true,

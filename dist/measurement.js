@@ -551,6 +551,9 @@
             delete this.units[unit.abbr];
             return this;
         }
+        clone() {
+            return new UnitLibrary(Array.from(this.unitsList));
+        }
     }
     const defaultLibrary = new UnitLibrary();
 
@@ -679,14 +682,23 @@
         }
     }
 
-    const measurementRegex = /^(?<value>[0-9.]*)(?<unit>.*)$/ig;
+    /**
+     *  (?<value>[-+]?[0-9.]*)
+     *  Gets the value, allowing decimals, plus, and minus
+     *
+     *  \s*
+     *  Allows any amount of white-space (or not) between the value and unit
+     *
+     *  (?<unit>.*)
+     *  Capture the value of the unit
+     */
+    const measurementRegex = /^(?<value>[-+]?[0-9.]*)\s*(?<unit>.*)$/ig;
     class Measurement {
         constructor(library = defaultLibrary) {
             this.library = defaultLibrary;
             this.units = {};
             if (library)
-                this.library = library;
-            library.unitsList.forEach((unit) => this.addUnit(unit));
+                this.registerLibrary(library);
         }
         get unit() { return this.units; }
         measurement(...args) { return this.measure(...args); }
@@ -694,10 +706,16 @@
             if (args.length === 1) {
                 return this.parseUnit(args[0]);
             }
-            return new Scalar({ value: args[0], unit: args[1] });
+            args[0];
+            let unit = args[1];
+            if (!unit) {
+                throw new Error('The unit argument provided is null or invalid');
+            }
+            return this.makeScalar(args[1])(args[0]);
         }
         parseUnit(unitString) {
             var _a, _b;
+            unitString = unitString.trim();
             let results = measurementRegex.exec(unitString);
             let resultUnit = null;
             let resultValue = null;
@@ -709,12 +727,24 @@
                     resultValue = parseFloat(results.groups.value);
                 }
             }
-            if (resultUnit !== null && resultValue !== null) {
-                return new Scalar({ value: resultValue, unit: resultUnit });
+            if (resultUnit === null || !resultValue) {
+                throw new Error('Unable to parse the given unit string: `' +
+                    unitString +
+                    '`');
             }
+            return this.makeScalar(resultUnit)(resultValue);
         }
         makeScalar(unit) {
-            return (value) => new Scalar({ unit, value });
+            let library = this.library;
+            return (value) => new Scalar({
+                unit,
+                value,
+                library,
+            });
+        }
+        registerLibrary(library) {
+            this.library = library;
+            library.unitsList.forEach((unit) => this.addUnit(unit));
         }
         addUnit(unit) {
             this.library.addUnit(unit);
@@ -740,6 +770,9 @@
             return this;
         }
     }
+    function MeasurementFactory(library = defaultLibrary) {
+        return new Measurement(library);
+    }
     const measurement = new Measurement();
 
     var bundle = /*#__PURE__*/Object.freeze({
@@ -751,7 +784,9 @@
         Unit: Unit,
         CompoundUnit: CompoundUnit,
         Scalar: Scalar,
+        measurementRegex: measurementRegex,
         Measurement: Measurement,
+        MeasurementFactory: MeasurementFactory,
         measurement: measurement
     });
 

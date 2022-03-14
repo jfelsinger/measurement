@@ -8,6 +8,7 @@ export interface iUnitLibrary {
     getUnit(key: string): iUnit;
     addUnit(unit: iUnit): iUnitLibrary;
     deleteUnit(unit: iUnit): iUnitLibrary;
+    clone(): iUnitLibrary;
 
     hasKey(key: string): boolean;
 }
@@ -66,6 +67,10 @@ export class UnitLibrary {
         delete this.units[unit.name];
         delete this.units[unit.abbr];
         return this;
+    }
+
+    clone() {
+        return new UnitLibrary(Array.from(this.unitsList));
     }
 }
 

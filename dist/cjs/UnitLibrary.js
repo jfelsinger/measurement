@@ -52,6 +52,9 @@ class UnitLibrary {
         delete this.units[unit.abbr];
         return this;
     }
+    clone() {
+        return new UnitLibrary(Array.from(this.unitsList));
+    }
 }
 exports.UnitLibrary = UnitLibrary;
 exports.defaultLibrary = new UnitLibrary();

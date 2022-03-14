@@ -49,6 +49,9 @@ export class UnitLibrary {
         delete this.units[unit.abbr];
         return this;
     }
+    clone() {
+        return new UnitLibrary(Array.from(this.unitsList));
+    }
 }
 export const defaultLibrary = new UnitLibrary();
 export default defaultLibrary;

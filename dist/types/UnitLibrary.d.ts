@@ -8,6 +8,7 @@ export interface iUnitLibrary {
     getUnit(key: string): iUnit;
     addUnit(unit: iUnit): iUnitLibrary;
     deleteUnit(unit: iUnit): iUnitLibrary;
+    clone(): iUnitLibrary;
     hasKey(key: string): boolean;
 }
 /**
@@ -24,6 +25,7 @@ export declare class UnitLibrary {
     hasKey(key: string): boolean;
     addUnit(unit: iUnit): this;
     deleteUnit(unit: iUnit): this;
+    clone(): UnitLibrary;
 }
 export declare const defaultLibrary: UnitLibrary;
 export default defaultLibrary;
