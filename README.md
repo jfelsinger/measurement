@@ -13,7 +13,7 @@ TypeScript.
 
 ## Installation
 
-```js
+```bash
 npm install measurement
 ```
 
